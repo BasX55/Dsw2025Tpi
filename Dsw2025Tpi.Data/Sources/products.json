@@ -1,0 +1,82 @@
+[
+  {
+    "sku": "ABC123",
+    "internalCode": "INT-001",
+    "name": "Camiseta deportiva",
+    "description": "Camiseta transpirable ideal para entrenamientos.",
+    "currentUnitPrice": 199.99,
+    "stockQuantity": 50
+  },
+  {
+    "sku": "DEF456",
+    "internalCode": "INT-002",
+    "name": "Zapatillas de running",
+    "description": "Zapatillas con amortiguación avanzada.",
+    "currentUnitPrice": 549.50,
+    "stockQuantity": 30
+  },
+  {
+    "sku": "GHI789",
+    "internalCode": "INT-003",
+    "name": "Botella térmica",
+    "description": "Botella de acero inoxidable con aislación térmica.",
+    "currentUnitPrice": 89.00,
+    "stockQuantity": 120
+  },
+  {
+    "sku": "JKL321",
+    "internalCode": "INT-004",
+    "name": "Pantalón outdoor",
+    "description": "Pantalón impermeable ideal para caminatas.",
+    "currentUnitPrice": 320.75,
+    "stockQuantity": 25
+  },
+  {
+    "sku": "MNO654",
+    "internalCode": "INT-005",
+    "name": "Mochila de trekking",
+    "description": "Mochila de 40 litros con soporte lumbar.",
+    "currentUnitPrice": 699.99,
+    "stockQuantity": 15
+  },
+  {
+    "sku": "PQR987",
+    "internalCode": "INT-006",
+    "name": "Guantes térmicos",
+    "description": "Guantes resistentes al frío extremo.",
+    "currentUnitPrice": 110.00,
+    "stockQuantity": 60
+  },
+  {
+    "sku": "STU135",
+    "internalCode": "INT-007",
+    "name": "Lentes deportivos",
+    "description": "Lentes con protección UV para actividades al aire libre.",
+    "currentUnitPrice": 145.20,
+    "stockQuantity": 40
+  },
+  {
+    "sku": "VWX246",
+    "internalCode": "INT-008",
+    "name": "Linterna LED recargable",
+    "description": "Linterna compacta con batería de larga duración.",
+    "currentUnitPrice": 78.90,
+    "stockQuantity": 80
+  },
+  {
+    "sku": "YZA369",
+    "internalCode": "INT-009",
+    "name": "Saco de dormir",
+    "description": "Saco para bajas temperaturas con interior de polar.",
+    "currentUnitPrice": 450.00,
+    "stockQuantity": 22
+  },
+  {
+    "sku": "BCD741",
+    "internalCode": "INT-010",
+    "name": "Gorra con visera",
+    "description": "Gorra ajustable para protección solar.",
+    "currentUnitPrice": 65.30,
+    "stockQuantity": 95
+  }
+]
