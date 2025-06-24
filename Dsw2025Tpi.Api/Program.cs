@@ -1,4 +1,5 @@
-
+using Dsw2025Ej15.Application.Dtos;
+using Dsw2025Ej15.Application.Services;
 namespace Dsw2025Tpi.Api;
 
 public class Program
@@ -14,7 +15,8 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddHealthChecks();
-
+        builder.Services.AddScoped<Dsw2025Tpi.Domain.Interfaces.IRepository, Dsw2025Tpi.Data.Repositories.InMemory>();
+        builder.Services.AddScoped<ProductsManagementService>();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
