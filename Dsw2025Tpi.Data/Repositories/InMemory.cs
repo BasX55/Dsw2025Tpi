@@ -88,6 +88,12 @@ namespace Dsw2025Tpi.Data.Repositories
         public async Task<T> Update<T>(T entity) where T : EntityBase
         {
             var set = await GetSet<T>();
+            var productos = await Task.FromResult(set?.Select(e => e.Id == entity.Id ? entity : e).ToList());
+            // sobrescribír el JSON
+            string rutaArchivo = "C:\\Users\\moran\\OneDrive\\Desktop\\DSW2025\\tfi\\Dsw2025Tpi\\Dsw2025Tpi.Data\\Sources\\products.json";
+            string json = JsonSerializer.Serialize(productos, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(rutaArchivo, json);
+
             return await Task.FromResult(set?.FirstOrDefault(e => e.Id == entity.Id) ?? entity);
         }
 

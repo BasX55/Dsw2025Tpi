@@ -54,4 +54,21 @@ public class ProductsController : ControllerBase
             return Problem("Se produjo un error al guardar el producto");
         }
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] ProductModel.Request request)
+    {
+        try
+        {
+            var product = await _service.GetProductById(id);
+            if (product == null) return NotFound();
+            var product2 = await _service.UpdateProduct(id, request);
+            return Ok(product2);
+        }
+        catch (Exception)
+        {
+            return Problem("Se produjo un error al actualizar el producto");
+        }
+    }
+
 }

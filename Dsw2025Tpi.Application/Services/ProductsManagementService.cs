@@ -42,4 +42,19 @@ public class ProductsManagementService
         
         return new ProductModel.Response(product.Id);
     }
+
+    public async Task<ProductModel.Response> UpdateProduct(Guid id, ProductModel.Request request)
+    {
+        var product = await _repository.GetById<Product>(id);
+        if (product == null) throw new ArgumentException($"No existe un producto con el Id {id}");
+        product.Sku = request.Sku;
+        product.Name = request.Name;
+        product.Description = request.Description;
+        product.CurrentUnitPrice = request.CurrentUnitPrice;
+        product.StockQuantity = request.StockQuantity;
+        product.IsActive = request.IsActive;
+        await _repository.Update(product);
+        
+        return new ProductModel.Response(product.Id);
+    }
 }
