@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Dsw2025Tpi.Data.Repositories
@@ -24,6 +25,7 @@ namespace Dsw2025Tpi.Data.Repositories
             _products = JsonSerializer.Deserialize<List<Product>>(json, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             });
         }
 
@@ -31,6 +33,26 @@ namespace Dsw2025Tpi.Data.Repositories
         {
             var set = await GetSet<T>();
             set.Add(entity);
+
+            if (typeof(T) == typeof(Product))
+            {
+                var filePath = "C:\\Users\\moran\\OneDrive\\Desktop\\DSW2025\\tfi\\Dsw2025Tpi\\Dsw2025Tpi.Data\\Sources\\products.json";
+                /*List<Product> products = new List<Product>();
+
+                if (File.Exists(filePath))
+                {
+                    var json = File.ReadAllText(filePath);
+                    if (!string.IsNullOrWhiteSpace(json) && json.TrimStart().StartsWith("["))
+                        products = JsonSerializer.Deserialize<List<Product>>(json);
+                    else if (!string.IsNullOrWhiteSpace(json))
+                        products.Add(JsonSerializer.Deserialize<Product>(json));
+                }
+
+                products.Add(entity as Product);*/
+            
+                File.WriteAllText(filePath, JsonSerializer.Serialize(set, new JsonSerializerOptions { WriteIndented = true }));
+            }
+
             return await Task.FromResult(entity);
         }
 

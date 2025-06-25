@@ -1,102 +1,56 @@
 [
   {
-    "id": "8c12a9c7-ccf5-4340-9290-23a5fa20d1e1",
-    "sku": "ABC123",
-    "internalCode": "INT-001",
-    "name": "Camiseta deportiva",
-    "description": "Camiseta transpirable ideal para entrenamientos.",
-    "currentUnitPrice": 199.99,
-    "stockQuantity": 50,
-    "isActive": true
+    "Sku": "str",
+    "Name": "string",
+    "Description": "string",
+    "CurrentUnitPrice": 7,
+    "StockQuantity": 5,
+    "IsActive": true,
+    "Id": "34ce4766-4236-4839-b9e5-12dec6321102"
   },
   {
-    "id": "a5d4e1b2-034f-4f3f-81b5-13252a6db3f9",
-    "sku": "DEF456",
-    "internalCode": "INT-002",
-    "name": "Zapatillas de running",
-    "description": "Zapatillas con amortiguación avanzada.",
-    "currentUnitPrice": 549.50,
-    "stockQuantity": 30,
-    "isActive": true
+    "Sku": "123",
+    "Name": "ASD",
+    "Description": null,
+    "CurrentUnitPrice": 0,
+    "StockQuantity": 0,
+    "IsActive": false,
+    "Id": "00000000-0000-0000-0000-000000000001"
   },
   {
-    "id": "d39b0fd2-94f0-44c9-a2d7-a8ad2260a4c0",
-    "sku": "GHI789",
-    "internalCode": "INT-003",
-    "name": "Botella térmica",
-    "description": "Botella de acero inoxidable con aislación térmica.",
-    "currentUnitPrice": 89.00,
-    "stockQuantity": 120,
-    "isActive": true
+    "Sku": "5644",
+    "Name": "FHD",
+    "Description": null,
+    "CurrentUnitPrice": 0,
+    "StockQuantity": 0,
+    "IsActive": false,
+    "Id": "00000000-0000-0000-0000-000000000002"
   },
   {
-    "id": "70e626b8-8e1d-4ac5-b412-c7a14fd35526",
-    "sku": "JKL321",
-    "internalCode": "INT-004",
-    "name": "Pantalón outdoor",
-    "description": "Pantalón impermeable ideal para caminatas.",
-    "currentUnitPrice": 320.75,
-    "stockQuantity": 25,
-    "isActive": true
+    "Sku": "strsddf",
+    "Name": "string",
+    "Description": "string",
+    "CurrentUnitPrice": 8,
+    "StockQuantity": 8,
+    "IsActive": true,
+    "Id": "4d18aa7d-983d-43b7-881f-4a2c40c62bb9"
   },
   {
-    "id": "6c6fc7f9-bc64-4f3a-b2c0-8d82e2b2be64",
-    "sku": "MNO654",
-    "internalCode": "INT-005",
-    "name": "Mochila de trekking",
-    "description": "Mochila de 40 litros con soporte lumbar.",
-    "currentUnitPrice": 699.99,
-    "stockQuantity": 15,
-    "isActive": true
+    "Sku": "strinwdffffg",
+    "Name": "string",
+    "Description": "string",
+    "CurrentUnitPrice": 45,
+    "StockQuantity": 65,
+    "IsActive": true,
+    "Id": "7e885547-1d16-4421-8819-72b74419171e"
   },
   {
-    "id": "2011f6c2-b1de-496a-9f18-3c05d3275084",
-    "sku": "PQR987",
-    "internalCode": "INT-006",
-    "name": "Guantes térmicos",
-    "description": "Guantes resistentes al frío extremo.",
-    "currentUnitPrice": 110.00,
-    "stockQuantity": 60,
-    "isActive": true
-  },
-  {
-    "id": "11bdfb94-2f09-4804-9507-4ce3f4fcdb2d",
-    "sku": "STU135",
-    "internalCode": "INT-007",
-    "name": "Lentes deportivos",
-    "description": "Lentes con protección UV para actividades al aire libre.",
-    "currentUnitPrice": 145.20,
-    "stockQuantity": 40,
-    "isActive": true
-  },
-  {
-    "id": "e5e37267-397e-42ec-9936-ecae4a178ae5",
-    "sku": "VWX246",
-    "internalCode": "INT-008",
-    "name": "Linterna LED recargable",
-    "description": "Linterna compacta con batería de larga duración.",
-    "currentUnitPrice": 78.90,
-    "stockQuantity": 80,
-    "isActive": true
-  },
-  {
-    "id": "59f11d90-f6c2-4fb5-80c4-f8c37aa1a719",
-    "sku": "YZA369",
-    "internalCode": "INT-009",
-    "name": "Saco de dormir",
-    "description": "Saco para bajas temperaturas con interior de polar.",
-    "currentUnitPrice": 450.00,
-    "stockQuantity": 22,
-    "isActive": true
-  },
-  {
-    "id": "6cb19d59-a818-4823-a3b3-765470b6ca86",
-    "sku": "BCD741",
-    "internalCode": "INT-010",
-    "name": "Gorra con visera",
-    "description": "Gorra ajustable para protección solar.",
-    "currentUnitPrice": 65.30,
-    "stockQuantity": 95,
-    "isActive": true
+    "Sku": "g",
+    "Name": "string",
+    "Description": "string",
+    "CurrentUnitPrice": 44,
+    "StockQuantity": 33,
+    "IsActive": true,
+    "Id": "7b07d236-750b-49e2-84d8-6ad1548f3314"
   }
 ]

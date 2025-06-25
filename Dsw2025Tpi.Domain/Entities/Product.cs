@@ -8,7 +8,7 @@ namespace Dsw2025Tpi.Domain.Entities
 {
     public class Product : EntityBase
     {
-        public Product(string sku, string name, string description, decimal currentUnitPrice, int stockQuantity, bool isActive)
+        public Product(string sku, string name, string description, decimal currentUnitPrice, int stockQuantity, bool isActive) : base()
         {
             Sku = sku;
             Name = name;
@@ -16,18 +16,17 @@ namespace Dsw2025Tpi.Domain.Entities
             CurrentUnitPrice = currentUnitPrice;
             StockQuantity = stockQuantity;
             IsActive = isActive;
+            
         }
 
         public Product() { }
         public string Sku { get; set; }
-        public string InternalCode { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal CurrentUnitPrice { get; set; }
-        public int StockQuantity { get; set; } 
-        public bool IsActive { get; set; } 
-        
+        public int StockQuantity { get; set; }
+        public bool IsActive { get; set; }
+
+
     }
-    
-    
 }

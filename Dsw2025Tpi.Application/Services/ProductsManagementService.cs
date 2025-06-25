@@ -2,6 +2,7 @@
 using Dsw2025Tpi.Application.Exceptions;
 using Dsw2025Tpi.Domain.Entities;
 using Dsw2025Tpi.Domain.Interfaces;
+using System.Text.Json;
 
 namespace Dsw2025Ej15.Application.Services;
 
@@ -35,8 +36,16 @@ public class ProductsManagementService
         //var exist = await _repository.First<Product>(p => p.Id == request.Sku);
         if (exist != null) throw new DuplicatedEntityException($"Ya existe un producto con el Sku {request.Sku}");
 
-        var product = new Product(request.Sku, request.Name, request.Description, request.CurrentUnitPrice, request.StockQuantity, request.IsActive);
-        await _repository.Add(product);
+        var product = new Product(request.Sku, request.Name, request.Description, (decimal)request.CurrentUnitPrice, request.StockQuantity, request.IsActive);
+        product.Id = Guid.NewGuid();
+        var lista = await _repository.Add(product);
+        // Convertir a JSON
+        //string jsonProduct = JsonSerializer.Serialize(lista);
+
+
+        // Guardarlo en un archivo (opcional)
+        //await File.WriteAllTextAsync("C:\\Users\\moran\\OneDrive\\Desktop\\DSW2025\\tfi\\Dsw2025Tpi\\Dsw2025Tpi.Data\\Sources\\products.json", jsonProduct);
+
         return new ProductModel.Response(product.Id);
     }
 }
