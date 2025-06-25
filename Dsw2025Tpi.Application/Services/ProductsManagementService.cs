@@ -63,11 +63,11 @@ public class ProductsManagementService
         var product = await _repository.GetById<Product>(id);
         if (product == null) throw new ArgumentException($"No existe un producto con el Id {id}");
 
-        if (request.Sku is not null) product.Sku = request.Sku;
-        if (request.Name is not null) product.Name = request.Name;
-        if (request.Description is not null) product.Description = request.Description;
-        if (request.CurrentUnitPrice.HasValue) product.CurrentUnitPrice = request.CurrentUnitPrice.Value;
-        if (request.StockQuantity.HasValue) product.StockQuantity = request.StockQuantity.Value;
+        //if (request.Sku is not null) product.Sku = request.Sku;
+        //if (request.Name is not null) product.Name = request.Name;
+        //if (request.Description is not null) product.Description = request.Description;
+        //if (request.CurrentUnitPrice.HasValue) product.CurrentUnitPrice = request.CurrentUnitPrice.Value;
+        //if (request.StockQuantity.HasValue) product.StockQuantity = request.StockQuantity.Value;
         if (request.IsActive.HasValue) product.IsActive = request.IsActive.Value;
 
         await _repository.Update(product);

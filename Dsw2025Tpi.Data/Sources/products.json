@@ -50,7 +50,7 @@
     "Description": "string",
     "CurrentUnitPrice": 44,
     "StockQuantity": 33,
-    "IsActive": true,
+    "IsActive": false,
     "Id": "7b07d236-750b-49e2-84d8-6ad1548f3314"
   }
 ]

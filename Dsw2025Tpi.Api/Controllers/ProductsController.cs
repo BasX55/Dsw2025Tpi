@@ -22,7 +22,16 @@ public class ProductsController : ControllerBase
     {
         var products = await _service.GetProducts();
         if (products == null || !products.Any()) return NoContent();
-        return Ok(products);
+        var result = products.Select(p => new
+        {
+            p.Sku,
+            p.Name,
+            p.Description,
+            p.CurrentUnitPrice,
+            p.StockQuantity,
+            p.IsActive
+        });
+        return Ok(result);
     }
 
   
