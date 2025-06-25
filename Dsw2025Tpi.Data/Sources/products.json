@@ -9,9 +9,9 @@
     "Id": "34ce4766-4236-4839-b9e5-12dec6321102"
   },
   {
-    "Sku": "123",
-    "Name": "ASD",
-    "Description": null,
+    "Sku": "string",
+    "Name": "string",
+    "Description": "string",
     "CurrentUnitPrice": 0,
     "StockQuantity": 0,
     "IsActive": false,

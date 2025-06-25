@@ -24,7 +24,7 @@ public class ProductsManagementService
 
     public async Task<ProductModel.Response> AddProduct(ProductModel.Request request)
     {
-        if (string.IsNullOrWhiteSpace(request.Sku) || 
+        if (string.IsNullOrWhiteSpace(request.Sku) ||
             string.IsNullOrWhiteSpace(request.Name) ||
             string.IsNullOrWhiteSpace(request.Description) ||
             request.StockQuantity <= 0 ||
@@ -39,7 +39,7 @@ public class ProductsManagementService
         var product = new Product(request.Sku, request.Name, request.Description, (decimal)request.CurrentUnitPrice, request.StockQuantity, request.IsActive);
         product.Id = Guid.NewGuid();
         var lista = await _repository.Add(product);
-        
+
         return new ProductModel.Response(product.Id);
     }
 
@@ -54,7 +54,25 @@ public class ProductsManagementService
         product.StockQuantity = request.StockQuantity;
         product.IsActive = request.IsActive;
         await _repository.Update(product);
-        
+
         return new ProductModel.Response(product.Id);
     }
+
+    public async Task<ProductModel.Response> PathProduct(Guid id, ProductModel.PatchRequest request)
+    {
+        var product = await _repository.GetById<Product>(id);
+        if (product == null) throw new ArgumentException($"No existe un producto con el Id {id}");
+
+        if (request.Sku is not null) product.Sku = request.Sku;
+        if (request.Name is not null) product.Name = request.Name;
+        if (request.Description is not null) product.Description = request.Description;
+        if (request.CurrentUnitPrice.HasValue) product.CurrentUnitPrice = request.CurrentUnitPrice.Value;
+        if (request.StockQuantity.HasValue) product.StockQuantity = request.StockQuantity.Value;
+        if (request.IsActive.HasValue) product.IsActive = request.IsActive.Value;
+
+        await _repository.Update(product);
+        return new ProductModel.Response(product.Id);
+    }
+
+
 }

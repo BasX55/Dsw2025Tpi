@@ -2,6 +2,7 @@
 using Dsw2025Ej15.Application.Services;
 using Dsw2025Tpi.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace Dsw2025Ej15.Api.Controllers;
 
@@ -68,6 +69,22 @@ public class ProductsController : ControllerBase
         catch (Exception)
         {
             return Problem("Se produjo un error al actualizar el producto");
+        }
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchProduct(Guid id, [FromBody] ProductModel.PatchRequest request)
+    {
+        try
+        {
+            var product = await _service.GetProductById(id);
+            if (product == null) return NotFound();
+            var prouctPatch = _service.PathProduct(id, request);
+            return Ok(product);
+        }
+        catch (Exception)
+        {
+            return Problem("Se produjo un error al actualizar parcialmente el producto");
         }
     }
 
