@@ -37,19 +37,7 @@ namespace Dsw2025Tpi.Data.Repositories
             if (typeof(T) == typeof(Product))
             {
                 var filePath = "C:\\Users\\moran\\OneDrive\\Desktop\\DSW2025\\tfi\\Dsw2025Tpi\\Dsw2025Tpi.Data\\Sources\\products.json";
-                /*List<Product> products = new List<Product>();
-
-                if (File.Exists(filePath))
-                {
-                    var json = File.ReadAllText(filePath);
-                    if (!string.IsNullOrWhiteSpace(json) && json.TrimStart().StartsWith("["))
-                        products = JsonSerializer.Deserialize<List<Product>>(json);
-                    else if (!string.IsNullOrWhiteSpace(json))
-                        products.Add(JsonSerializer.Deserialize<Product>(json));
-                }
-
-                products.Add(entity as Product);*/
-            
+                
                 File.WriteAllText(filePath, JsonSerializer.Serialize(set, new JsonSerializerOptions { WriteIndented = true }));
             }
 

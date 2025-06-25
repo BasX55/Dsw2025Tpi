@@ -39,13 +39,7 @@ public class ProductsManagementService
         var product = new Product(request.Sku, request.Name, request.Description, (decimal)request.CurrentUnitPrice, request.StockQuantity, request.IsActive);
         product.Id = Guid.NewGuid();
         var lista = await _repository.Add(product);
-        // Convertir a JSON
-        //string jsonProduct = JsonSerializer.Serialize(lista);
-
-
-        // Guardarlo en un archivo (opcional)
-        //await File.WriteAllTextAsync("C:\\Users\\moran\\OneDrive\\Desktop\\DSW2025\\tfi\\Dsw2025Tpi\\Dsw2025Tpi.Data\\Sources\\products.json", jsonProduct);
-
+        
         return new ProductModel.Response(product.Id);
     }
 }
