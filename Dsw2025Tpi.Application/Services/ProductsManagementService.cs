@@ -73,6 +73,14 @@ public class ProductsManagementService
         await _repository.Update(product);
         return new ProductModel.Response(product.Id);
     }
+    public async Task<ProductModel.Response> DeleteProduct(Guid id)
+    {
+        var product = await _repository.GetById<Product>(id);
+        if (product == null) throw new ArgumentException($"No existe un producto con el Id {id}");
+        var result = await _repository.Delete(product);
+        await _repository.Update(result);
+        return new ProductModel.Response(product.Id);
+    }
 
 
 }

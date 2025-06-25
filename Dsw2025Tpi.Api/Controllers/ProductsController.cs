@@ -97,4 +97,20 @@ public class ProductsController : ControllerBase
         }
     }
 
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProduct(Guid id)
+    {
+        try
+        {
+            var product = await _service.GetProductById(id);
+            if (product == null) return NotFound();
+            await _service.DeleteProduct(id);
+            return NoContent();
+        }
+        catch (Exception)
+        {
+            return Problem("Se produjo un error al eliminar el producto");
+        }
+    }
+
 }

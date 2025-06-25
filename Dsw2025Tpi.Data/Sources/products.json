@@ -18,15 +18,6 @@
     "Id": "00000000-0000-0000-0000-000000000001"
   },
   {
-    "Sku": "5644",
-    "Name": "FHDASDASDS",
-    "Description": "DESCRIPCION",
-    "CurrentUnitPrice": 0,
-    "StockQuantity": 0,
-    "IsActive": false,
-    "Id": "00000000-0000-0000-0000-000000000002"
-  },
-  {
     "Sku": "strsddf",
     "Name": "string",
     "Description": "string",
@@ -34,15 +25,6 @@
     "StockQuantity": 8,
     "IsActive": true,
     "Id": "4d18aa7d-983d-43b7-881f-4a2c40c62bb9"
-  },
-  {
-    "Sku": "strinwdffffg",
-    "Name": "string",
-    "Description": "string",
-    "CurrentUnitPrice": 45,
-    "StockQuantity": 65,
-    "IsActive": true,
-    "Id": "7e885547-1d16-4421-8819-72b74419171e"
   },
   {
     "Sku": "g",
