@@ -96,6 +96,20 @@ public class ProductsController : ControllerBase
             return Problem("Se produjo un error al actualizar parcialmente el producto");
         }
     }
+    /*
+     * 6. Crear una nueva orden:
+○ Método HTTP: POST
+○ Ruta: /api/orders
+○ Descripción: Permite registrar una nueva orden de compra en el sistema.
+La orden debe incluir un identiers
+     *//*
+    [HttpPost()]
+    public async Task<IActionResult> AddOrder() 
+    {
+        return 
+    
+    }*/
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduct(Guid id)
