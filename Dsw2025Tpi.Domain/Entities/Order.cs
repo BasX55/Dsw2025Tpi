@@ -25,7 +25,7 @@ namespace Dsw2025Tpi.Domain.Entities
         public OrderStatus Status { get; set; }
 
         public Customer Customer { get; set; }
-        public List<OrderItem> OrderItems { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; }
 
     }
 }
