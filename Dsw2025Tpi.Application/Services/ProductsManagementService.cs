@@ -25,11 +25,12 @@ public class ProductsManagementService
 
     public async Task<ProductModel.Response> AddProduct(ProductModel.Request request)
     {
-        if (string.IsNullOrWhiteSpace(request.Sku) ||
+       if (string.IsNullOrWhiteSpace(request.Sku) ||
             string.IsNullOrWhiteSpace(request.Name) ||
+            string.IsNullOrWhiteSpace(request.InternalCode)||
             string.IsNullOrWhiteSpace(request.Description) ||
             request.StockQuantity <= 0 ||
-            request.CurrentUnitPrice < 0)
+            request.CurrentUnitPrice <= 0)   
         {
             throw new ArgumentException("Valores para el producto no válidos");
         }
@@ -37,7 +38,7 @@ public class ProductsManagementService
         //var exist = await _repository.First<Product>(p => p.Id == request.Sku);
         if (exist != null) throw new DuplicatedEntityException($"Ya existe un producto con el Sku {request.Sku}");
 
-        var product = new Product(request.Sku, request.Name, request.Description, (decimal)request.CurrentUnitPrice, request.StockQuantity, request.IsActive);
+        var product = new Product(request.Sku, request.InternalCode, request.Name, request.Description, (decimal)request.CurrentUnitPrice, request.StockQuantity, request.IsActive);
         product.Id = Guid.NewGuid();
         var lista = await _repository.Add(product);
 
@@ -50,6 +51,7 @@ public class ProductsManagementService
         if (product == null) throw new ArgumentException($"No existe un producto con el Id {id}");
         product.Sku = request.Sku;
         product.Name = request.Name;
+        product.InternalCode = request.InternalCode;
         product.Description = request.Description;
         product.CurrentUnitPrice = request.CurrentUnitPrice;
         product.StockQuantity = request.StockQuantity;

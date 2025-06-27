@@ -17,20 +17,24 @@ public class ProductsController : ControllerBase
         _service = service;
     }
 
-    [HttpGet()]
+    [HttpGet]
     public async Task<IActionResult> GetProducts()
     {
         var products = await _service.GetProducts();
         if (products == null || !products.Any()) return NoContent();
-        var result = products.Select(p => new
-        {
-            p.Sku,
-            p.Name,
-            p.Description,
-            p.CurrentUnitPrice,
-            p.StockQuantity,
-            p.IsActive
-        });
+        var result = products
+    .Where(p => p.IsActive)
+    .Select(p => new
+    {
+        p.Sku,
+        p.Name,
+        p.InternalCode,
+        p.Description,
+        p.CurrentUnitPrice,
+        p.StockQuantity
+    })
+    .ToList();
+
         return Ok(result);
     }
 
@@ -43,7 +47,7 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
-    [HttpPost()]
+    [HttpPost]
     public async Task<IActionResult> AddProduct([FromBody] ProductModel.Request request)
     {
         //verificar si los datos que envió el cliente en el cuerpo de la solicitud son válidos según las reglas del modelo

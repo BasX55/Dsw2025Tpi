@@ -29,6 +29,7 @@ public class Dsw2025TpiContext: DbContext
         modelBuilder.Entity<OrderItem>()
             .Property(p => p.UnitPrice)
             .HasPrecision(15, 2);
+        
             
     }
     
