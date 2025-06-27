@@ -48,11 +48,26 @@ public class EfRepository: IRepository
         return await Include(_context.Set<T>(), include).Where(predicate).ToListAsync();
     }
 
-    public async Task<T> Update<T>(T entity) where T : EntityBase
+    public async Task<T?> Update<T>(T entity) where T : EntityBase
     {
-        var s =_context.Update(entity);
-        await _context.SaveChangesAsync();
-        return entity;
+        try
+        {
+            var existing = await _context.Set<T>().FindAsync(entity.Id);
+            if (existing == null)
+            {
+                Console.WriteLine("No se encontró la entidad.");
+                return null;
+            }
+
+            _context.Entry(existing).CurrentValues.SetValues(entity);
+            await _context.SaveChangesAsync();
+            return existing;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"💥 Error: {ex.Message}");
+            return null;
+        }
     }
 
     private static IQueryable<T> Include<T>(IQueryable<T> query, string[] includes) where T : EntityBase
