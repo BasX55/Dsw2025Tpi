@@ -11,17 +11,21 @@ using System.Threading.Tasks;
 
 namespace Dsw2025Tpi.Data.Repositories
 {
-    public class InMemory : IRepository
+    public class Repository: IRepository
     {
         private List<Product>? _products;
-        public InMemory()
+        public Repository()
         {
             loadProduct();
         }
 
         private void loadProduct()
         {
-            var json = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "C:\\Users\\moran\\OneDrive\\Desktop\\DSW2025\\tfi\\Dsw2025Tpi\\Dsw2025Tpi.Data\\Sources\\products.json"));
+            var basePath = AppContext.BaseDirectory;
+            var filePath = Path.Combine(basePath, "Sources", "products.json");
+            var json = File.ReadAllText(filePath);
+
+            
             _products = JsonSerializer.Deserialize<List<Product>>(json, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
@@ -36,7 +40,9 @@ namespace Dsw2025Tpi.Data.Repositories
 
             if (typeof(T) == typeof(Product))
             {
-                var filePath = "C:\\Users\\moran\\OneDrive\\Desktop\\DSW2025\\tfi\\Dsw2025Tpi\\Dsw2025Tpi.Data\\Sources\\products.json";
+                var basePath = AppContext.BaseDirectory;
+                string filePath = Path.Combine(basePath, "Sources", "products.json");
+                
 
                 File.WriteAllText(filePath, JsonSerializer.Serialize(set, new JsonSerializerOptions { WriteIndented = true }));
             }
@@ -68,7 +74,7 @@ namespace Dsw2025Tpi.Data.Repositories
             return set?.FirstOrDefault(e => e.Id == id);
         }
 
-
+        
 
         private async Task<List<T>?> GetSet<T>() where T : EntityBase
         {
@@ -90,13 +96,17 @@ namespace Dsw2025Tpi.Data.Repositories
             var set = await GetSet<T>();
             var productos = await Task.FromResult(set?.Select(e => e.Id == entity.Id ? entity : e).ToList());
             // sobrescribír el JSON
-            string rutaArchivo = "C:\\Users\\moran\\OneDrive\\Desktop\\DSW2025\\tfi\\Dsw2025Tpi\\Dsw2025Tpi.Data\\Sources\\products.json";
+            var basePath = AppContext.BaseDirectory;
+            var filePath = Path.Combine(basePath, "Sources", "products.json");
+            
+
+            //string rutaArchivo = "C:\\Users\\moran\\OneDrive\\Desktop\\DSW2025\\tfi\\Dsw2025Tpi\\Dsw2025Tpi.Data\\Sources\\products.json";
             string json = JsonSerializer.Serialize(productos, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(rutaArchivo, json);
+            File.WriteAllText(filePath, json);
 
             return await Task.FromResult(set?.FirstOrDefault(e => e.Id == entity.Id) ?? entity);
         }
 
-
+        
     }
 }

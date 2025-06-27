@@ -9,11 +9,11 @@
     "Id": "34ce4766-4236-4839-b9e5-12dec6321102"
   },
   {
-    "Sku": "string",
-    "Name": "string",
-    "Description": "string",
-    "CurrentUnitPrice": 0,
-    "StockQuantity": 0,
+    "Sku": "stringAAAAA",
+    "Name": "strinaag",
+    "Description": "straaing",
+    "CurrentUnitPrice": 44,
+    "StockQuantity": 88,
     "IsActive": false,
     "Id": "00000000-0000-0000-0000-000000000001"
   },
@@ -27,12 +27,12 @@
     "Id": "4d18aa7d-983d-43b7-881f-4a2c40c62bb9"
   },
   {
-    "Sku": "g",
-    "Name": "string",
-    "Description": "string",
-    "CurrentUnitPrice": 44,
-    "StockQuantity": 33,
-    "IsActive": false,
-    "Id": "7b07d236-750b-49e2-84d8-6ad1548f3314"
+    "Sku": "strinAAAaassssg",
+    "Name": "staaring",
+    "Description": "strinaag",
+    "CurrentUnitPrice": 55,
+    "StockQuantity": 66,
+    "IsActive": true,
+    "Id": "63d3c9ca-5f70-424b-afeb-93ad3faa6e4b"
   }
 ]

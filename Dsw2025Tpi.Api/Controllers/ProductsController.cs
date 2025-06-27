@@ -14,7 +14,7 @@ public class ProductsController : ControllerBase
 
     public ProductsController(ProductsManagementService service)
     {
-        _service = service; 
+        _service = service;
     }
 
     [HttpGet()]
@@ -34,9 +34,9 @@ public class ProductsController : ControllerBase
         return Ok(result);
     }
 
-  
+
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetProductBySku(Guid id)
+    public async Task<IActionResult> GetProductById(Guid id)
     {
         var product = await _service.GetProductById(id);
         if (product == null) return NotFound();
@@ -44,18 +44,22 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost()]
-    public async Task<IActionResult> AddProduct([FromBody]ProductModel.Request request)
+    public async Task<IActionResult> AddProduct([FromBody] ProductModel.Request request)
     {
+        //verificar si los datos que envió el cliente en el cuerpo de la solicitud son válidos según las reglas del modelo
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         try
         {
             var product = await _service.AddProduct(request);
-            return Ok(product);
+            return StatusCode(StatusCodes.Status201Created, product);
         }
         catch (ArgumentException ae)
         {
             return BadRequest(ae.Message);
         }
-        catch(DuplicatedEntityException de)
+        catch (DuplicatedEntityException de)
         {
             return Conflict(de.Message);
         }
@@ -72,8 +76,9 @@ public class ProductsController : ControllerBase
         {
             var product = await _service.GetProductById(id);
             if (product == null) return NotFound();
-            var product2 = await _service.UpdateProduct(id, request);
-            return Ok(product2);
+            var updatedProduct = await _service.UpdateProduct(id, request);
+            return Ok(updatedProduct);
+
         }
         catch (Exception)
         {
@@ -89,14 +94,33 @@ public class ProductsController : ControllerBase
             var product = await _service.GetProductById(id);
             if (product == null) return NotFound();
             var prouctPatch = _service.PathProduct(id, request);
-            return Ok(product);
+            return NoContent();
         }
         catch (Exception)
         {
             return Problem("Se produjo un error al actualizar parcialmente el producto");
         }
     }
-    /*
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProduct(Guid id)
+    {
+        try
+        {
+            var product = await _service.GetProductById(id);
+            if (product == null) return NotFound();
+            await _service.DeleteProduct(id);
+            return Ok(product);
+        }
+        catch (Exception)
+        {
+            return Problem("Se produjo un error al eliminar el producto");
+        }
+    }
+
+}
+
+/*
      * 6. Crear una nueva orden:
 ○ Método HTTP: POST
 ○ Ruta: /api/orders
@@ -109,22 +133,3 @@ La orden debe incluir un identiers
         return 
     
     }*/
-
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteProduct(Guid id)
-    {
-        try
-        {
-            var product = await _service.GetProductById(id);
-            if (product == null) return NotFound();
-            await _service.DeleteProduct(id);
-            return NoContent();
-        }
-        catch (Exception)
-        {
-            return Problem("Se produjo un error al eliminar el producto");
-        }
-    }
-
-}
