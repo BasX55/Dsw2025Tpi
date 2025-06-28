@@ -97,7 +97,7 @@ public class ProductsController : ControllerBase
         {
             var product = await _service.GetProductById(id);
             if (product == null) return NotFound();
-            var prouctPatch = _service.PathProduct(id, request);
+            await _service.PathProduct(id, request);
             return NoContent();
         }
         catch (Exception)

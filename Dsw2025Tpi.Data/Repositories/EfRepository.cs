@@ -52,6 +52,9 @@ public class EfRepository: IRepository
     {
         try
         {
+            Console.WriteLine($"📦 Actualizando entidad de tipo: {typeof(T).Name}, con ID: {entity.Id}");
+
+            Console.WriteLine($"🏷 DbSet usado: {_context.Set<T>().GetType().Name}");
             var existing = await _context.Set<T>().FindAsync(entity.Id);
             if (existing == null)
             {
