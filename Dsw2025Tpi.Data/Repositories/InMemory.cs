@@ -16,10 +16,10 @@ namespace Dsw2025Tpi.Data.Repositories
         private List<Product>? _products;
         public InMemory()
         {
-            loadProduct();
+            LoadProduct();
         }
 
-        private void loadProduct()
+        private void LoadProduct()
         {
             var json = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Sources", "products.json"));
             _products = JsonSerializer.Deserialize<List<Product>>(json, new JsonSerializerOptions
@@ -87,12 +87,15 @@ namespace Dsw2025Tpi.Data.Repositories
 
         public async Task<T> Update<T>(T entity) where T : EntityBase
         {
+
             var set = await GetSet<T>();
             var productos = await Task.FromResult(set?.Select(e => e.Id == entity.Id ? entity : e).ToList());
             // sobrescribír el JSON
-            string rutaArchivo = Path.Combine(AppContext.BaseDirectory, "Sources", "products.json");
+            var basePath = AppContext.BaseDirectory;
+            var filePath = Path.Combine(basePath, "Sources", "products.json");
+
             string json = JsonSerializer.Serialize(productos, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(rutaArchivo, json);
+            File.WriteAllText(filePath, json);
 
             return await Task.FromResult(set?.FirstOrDefault(e => e.Id == entity.Id) ?? entity);
         }

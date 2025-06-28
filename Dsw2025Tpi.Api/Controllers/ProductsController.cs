@@ -48,7 +48,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddProduct([FromBody] ProductModel.Request request)
+    public async Task<IActionResult> AddProduct([FromBody] ProductModel.RequestP request)
     {
         //verificar si los datos que envió el cliente en el cuerpo de la solicitud son válidos según las reglas del modelo
         if (!ModelState.IsValid)
@@ -74,13 +74,13 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] ProductModel.Request request)
+    public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] ProductModel.RequestP request)
     {
         try
         {
             var product = await _service.GetProductById(id);
             if (product == null) return NotFound();
-            var updatedProduct = await _service.UpdateProduct(id, request);
+            var updatedProduct = await _service.PutProduct(id, request);
             return Ok(updatedProduct);
 
         }

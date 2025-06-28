@@ -17,8 +17,8 @@ public class Dsw2025TpiContext: DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Product>()
-        .HasIndex(p => p.Sku)
-        .IsUnique();
+            .HasIndex(p => p.Sku)
+            .IsUnique();
 
         modelBuilder.Entity<Product>()
             .Property(p => p.Name)

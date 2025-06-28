@@ -23,7 +23,7 @@ public class ProductsManagementService
     }
     public async Task<List<Product>?> GetProducts() => (List<Product>?)await _repository.GetAll<Product>();
 
-    public async Task<ProductModel.Response> AddProduct(ProductModel.Request request)
+    public async Task<ProductModel.Response> AddProduct(ProductModel.RequestP request)
     {
        if (string.IsNullOrWhiteSpace(request.Sku) ||
             string.IsNullOrWhiteSpace(request.Name) ||
@@ -35,10 +35,10 @@ public class ProductsManagementService
             throw new ArgumentException("Valores para el producto no válidos");
         }
         var exist = await _repository.First<Product>(p => p.Sku == request.Sku);
-        //var exist = await _repository.First<Product>(p => p.Id == request.Sku);
+        
         if (exist != null) throw new DuplicatedEntityException($"Ya existe un producto con el Sku {request.Sku}");
 
-        var product = new Product(request.Sku, request.InternalCode, request.Name, request.Description, (decimal)request.CurrentUnitPrice, request.StockQuantity, request.IsActive);
+        var product = new Product(request.Sku, request.InternalCode, request.Name, request.Description, (decimal)request.CurrentUnitPrice, request.StockQuantity, true);
         product.Id = Guid.NewGuid();
         var lista = await _repository.Add(product);
 
@@ -60,17 +60,27 @@ public class ProductsManagementService
 
         return new ProductModel.Response(product.Id);
     }
+    public async Task<ProductModel.Response> PutProduct(Guid id, ProductModel.RequestP request)
+    {
+        var product = await _repository.GetById<Product>(id);
+        if (product == null) throw new ArgumentException($"No existe un producto con el Id {id}");
+        product.Sku = request.Sku;
+        product.Name = request.Name;
+        product.InternalCode = request.InternalCode;
+        product.Description = request.Description;
+        product.CurrentUnitPrice = request.CurrentUnitPrice;
+        product.StockQuantity = request.StockQuantity;
+        
+        await _repository.Update(product);
+
+        return new ProductModel.Response(product.Id);
+    }
 
     public async Task<ProductModel.Response> PathProduct(Guid id, ProductModel.PatchRequest request)
     {
         var product = await _repository.GetById<Product>(id);
         if (product == null) throw new ArgumentException($"No existe un producto con el Id {id}");
 
-        //if (request.Sku is not null) product.Sku = request.Sku;
-        //if (request.Name is not null) product.Name = request.Name;
-        //if (request.Description is not null) product.Description = request.Description;
-        //if (request.CurrentUnitPrice.HasValue) product.CurrentUnitPrice = request.CurrentUnitPrice.Value;
-        //if (request.StockQuantity.HasValue) product.StockQuantity = request.StockQuantity.Value;
         if (request.IsActive.HasValue) product.IsActive = request.IsActive.Value;
 
         await _repository.Update(product);
