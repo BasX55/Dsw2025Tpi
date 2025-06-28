@@ -1,35 +1,35 @@
 [
   {
-    "Sku": "str",
-    "Name": "string",
-    "Description": "string",
+    "Sku": "SKU-0001",
+    "Name": "Producto A",
+    "Description": "Descripción del producto A",
     "CurrentUnitPrice": 7,
     "StockQuantity": 5,
     "IsActive": true,
     "Id": "34ce4766-4236-4839-b9e5-12dec6321102"
   },
   {
-    "Sku": "stringAAAAA",
-    "Name": "strinaag",
-    "Description": "straaing",
+    "Sku": "SKU-0002",
+    "Name": "Producto B",
+    "Description": "Descripción del producto B",
     "CurrentUnitPrice": 44,
     "StockQuantity": 88,
     "IsActive": false,
     "Id": "00000000-0000-0000-0000-000000000001"
   },
   {
-    "Sku": "strsddf",
-    "Name": "string",
-    "Description": "string",
+    "Sku": "SKU-0003",
+    "Name": "Producto C",
+    "Description": "Descripción del producto C",
     "CurrentUnitPrice": 8,
     "StockQuantity": 8,
     "IsActive": true,
     "Id": "4d18aa7d-983d-43b7-881f-4a2c40c62bb9"
   },
   {
-    "Sku": "strinAAAaassssg",
-    "Name": "staaring",
-    "Description": "strinaag",
+    "Sku": "SKU-0004",
+    "Name": "Producto D",
+    "Description": "Descripción del producto D",
     "CurrentUnitPrice": 55,
     "StockQuantity": 66,
     "IsActive": true,
