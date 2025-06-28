@@ -1,5 +1,6 @@
 using Dsw2025Ej15.Application.Dtos;
 using Dsw2025Ej15.Application.Services;
+using Dsw2025Tpi.Application.Services;
 using Dsw2025Tpi.Data;
 using Dsw2025Tpi.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ public class Program
         builder.Services.AddScoped<Dsw2025Tpi.Domain.Interfaces.IRepository, Dsw2025Tpi.Data.Repositories.EfRepository>(); //PARA SQL SERVER
         
         builder.Services.AddScoped<ProductsManagementService>();
+        builder.Services.AddScoped<OrderManagementService>();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

@@ -1,9 +1,8 @@
 ﻿using Dsw2025Ej15.Application.Dtos;
 using Dsw2025Tpi.Application.Exceptions;
-using Dsw2025Tpi.Data.Repositories;
 using Dsw2025Tpi.Domain.Entities;
 using Dsw2025Tpi.Domain.Interfaces;
-using System.Text.Json;
+
 
 namespace Dsw2025Ej15.Application.Services;
 
@@ -45,21 +44,7 @@ public class ProductsManagementService
         return new ProductModel.Response(product.Id);
     }
 
-    public async Task<ProductModel.Response> UpdateProduct(Guid id, ProductModel.Request request)
-    {
-        var product = await _repository.GetById<Product>(id);
-        if (product == null) throw new ArgumentException($"No existe un producto con el Id {id}");
-        product.Sku = request.Sku;
-        product.Name = request.Name;
-        product.InternalCode = request.InternalCode;
-        product.Description = request.Description;
-        product.CurrentUnitPrice = request.CurrentUnitPrice;
-        product.StockQuantity = request.StockQuantity;
-        product.IsActive = request.IsActive;
-        await _repository.Update(product);
-
-        return new ProductModel.Response(product.Id);
-    }
+  
     public async Task<ProductModel.Response> PutProduct(Guid id, ProductModel.RequestP request)
     {
         var product = await _repository.GetById<Product>(id);

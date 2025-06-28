@@ -29,11 +29,26 @@ public class Dsw2025TpiContext: DbContext
         modelBuilder.Entity<Order>()
             .Property(p => p.TotalAmount)
             .HasPrecision(15, 2);
-        modelBuilder.Entity<OrderItem>()
-            .Property(p => p.UnitPrice)
-            .HasPrecision(15, 2);
-        
-            
+        modelBuilder.Entity<OrderItem>(mb =>
+        {
+            mb.HasKey(oi => oi.Id);
+            mb.Property(oi => oi.UnitPrice)
+                .HasPrecision(15, 2);
+            mb.Ignore(oi => oi.Subtotal);
+        });
+        modelBuilder.Entity<Order>(mb =>
+        {
+            mb.HasKey(o => o.Id);
+            mb.Property(o => o.ShippingAddress)
+                .HasMaxLength(100);
+            mb.Property(o => o.BillingAddress)
+                .HasMaxLength(100);
+            mb.Property(o => o.Date)
+                .HasDefaultValueSql("getdate()");
+            mb.Ignore(o => o.TotalAmount);
+        });
+
+
     }
     
     

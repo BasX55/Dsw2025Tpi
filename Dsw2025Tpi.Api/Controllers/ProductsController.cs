@@ -2,7 +2,7 @@
 using Dsw2025Ej15.Application.Services;
 using Dsw2025Tpi.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+
 
 namespace Dsw2025Ej15.Api.Controllers;
 
@@ -124,16 +124,3 @@ public class ProductsController : ControllerBase
 
 }
 
-/*
-     * 6. Crear una nueva orden:
-○ Método HTTP: POST
-○ Ruta: /api/orders
-○ Descripción: Permite registrar una nueva orden de compra en el sistema.
-La orden debe incluir un identiers
-     *//*
-    [HttpPost()]
-    public async Task<IActionResult> AddOrder() 
-    {
-        return 
-    
-    }*/
