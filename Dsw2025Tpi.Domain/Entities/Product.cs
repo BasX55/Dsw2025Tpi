@@ -29,5 +29,8 @@ namespace Dsw2025Tpi.Domain.Entities
         public bool IsActive { get; set; }
 
 
+        // public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>(); //Opcional- Si querés navegación inversa desde Product hacia OrderItems
+
+
     }
 }

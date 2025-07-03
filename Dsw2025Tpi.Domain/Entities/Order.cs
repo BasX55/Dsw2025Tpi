@@ -25,11 +25,11 @@ namespace Dsw2025Tpi.Domain.Entities
         public string? BillingAddress { get; set; }
         public string? Notes { get; set; }
         public decimal TotalAmount => OrderItems?.Sum(item => item.Subtotal) ?? 0;
-        public OrderStatus Status { get; set; }
+        public OrderStatus Status { get; set; } = OrderStatus.Pending;
 
         public Guid CustomerID { get; set; }
         public virtual Customer? Customer { get; set; }
-        public virtual ICollection<OrderItem>? OrderItems { get; set; }
+        public virtual ICollection<OrderItem>? OrderItems { get; set; } = new List<OrderItem>();
 
     }
 }

@@ -16,29 +16,26 @@ public class Dsw2025TpiContext: DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Product>()
-            .HasIndex(p => p.Sku)
-            .IsUnique();
+        
 
-        modelBuilder.Entity<Product>()
-            .Property(p => p.Name)
-            .HasMaxLength(60);
-        modelBuilder.Entity<Product>()
-            .Property(p => p.CurrentUnitPrice)
-            .HasPrecision(15, 2);
-        modelBuilder.Entity<Order>()
-            .Property(p => p.TotalAmount)
-            .HasPrecision(15, 2);
-        modelBuilder.Entity<OrderItem>(mb =>
+        modelBuilder.Entity<Product>(mb =>
         {
-            mb.HasKey(oi => oi.Id);
-            mb.Property(oi => oi.UnitPrice)
+            mb.HasIndex(p => p.Sku)
+                .IsUnique();            
+            mb.Property(p => p.Sku)
+                .HasMaxLength(30);
+            mb.Property(p => p.InternalCode)
+                .HasMaxLength(30);
+            mb.Property(p => p.Name)
+                .HasMaxLength(60);
+            mb.Property(p => p.Description)
+                .HasMaxLength(200);
+            mb.Property(p => p.CurrentUnitPrice)
                 .HasPrecision(15, 2);
-            mb.Ignore(oi => oi.Subtotal);
         });
+
         modelBuilder.Entity<Order>(mb =>
         {
-            mb.HasKey(o => o.Id);
             mb.Property(o => o.ShippingAddress)
                 .HasMaxLength(100);
             mb.Property(o => o.BillingAddress)
@@ -48,6 +45,41 @@ public class Dsw2025TpiContext: DbContext
             mb.Ignore(o => o.TotalAmount);
         });
 
+        modelBuilder.Entity<OrderItem>(mb =>
+        {
+            mb.Ignore(oi => oi.Subtotal);
+
+            mb.Property(oi => oi.Description)
+                .HasMaxLength(200);
+
+            mb.HasOne(oi => oi.Order)
+                .WithMany(o => o.OrderItems)
+                .HasForeignKey(oi => oi.OrderId) 
+                .OnDelete(DeleteBehavior.Cascade);
+
+            mb.HasOne(oi => oi.Product)
+                .WithMany()
+                .HasForeignKey(oi => oi.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        
+        modelBuilder.Entity<Customer>(mb =>
+        {
+           
+            mb.Property(c => c.Email)
+                .HasMaxLength(100);
+            mb.Property(c => c.Name)
+                .HasMaxLength(60);
+            mb.Property(c => c.PhoneNumber)
+                .HasMaxLength(20);
+
+            // Relación uno a muchos con Order
+            mb.HasMany(c => c.Orders)
+                .WithOne(o => o.Customer)
+                .HasForeignKey(o => o.CustomerID)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
 
     }
     
