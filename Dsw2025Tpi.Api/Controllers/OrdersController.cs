@@ -3,6 +3,7 @@ using Dsw2025Tpi.Application.Dtos;
 using Dsw2025Tpi.Application.Exceptions;
 using Dsw2025Tpi.Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using static Dsw2025Tpi.Application.Dtos.OrderModel;
 
 namespace Dsw2025Tpi.Api.Controllers;
 [ApiController]
@@ -19,8 +20,12 @@ public class OrderController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddOrder([FromBody] OrderModel.Request request)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         try
         {
+           
             var order = await _service.AddOrder(request);
             return Ok(order);
         }
@@ -35,6 +40,63 @@ public class OrderController : ControllerBase
         catch (Exception)
         {
             return Problem("Se produjo un error al guardar la orden");
+        }
+    }
+
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetOrderById(Guid id)
+    {
+        if (id == Guid.Empty)
+            return BadRequest("El ID de la orden no puede ser un Guid vacío");
+        try
+        {
+            var order = await _service.GetOrderById(id);
+            if (order == null)
+                return NotFound("Orden no encontrada");
+            return Ok(order);
+        }
+        catch (Exception)
+        {
+            return Problem("Se produjo un error al obtener la orden");
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllOrders()
+    {
+        try
+        {
+            var orders = await _service.GetAllOrders();
+            return Ok(orders);
+        }
+        catch (Exception)
+        {
+            return Problem("Se produjo un error al obtener las órdenes");
+        }
+    }
+    [HttpPut("{id}/status")]
+    public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] UpdateStatusRequest request)
+    {
+        if (id == Guid.Empty)
+            return BadRequest("El ID de la orden no puede ser un Guid vacío");
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        try
+        {
+            var updatedOrder = await _service.UpdateOrderStatus(id, request.NewStatus);
+            //var updatedOrder = await _service.UpdateOrderStatus(id, request);
+            if (updatedOrder == null)
+                return NotFound("Orden no encontrada");
+            return Ok(updatedOrder);
+        }
+        catch (ArgumentException ae)
+        {
+            return BadRequest(ae.Message);
+        }
+        catch (Exception)
+        {
+            return Problem("Se produjo un error al actualizar el estado de la orden");
         }
     }
 }

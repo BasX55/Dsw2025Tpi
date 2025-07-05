@@ -28,7 +28,12 @@ namespace Dsw2025Tpi.Domain.Entities
         public int StockQuantity { get; set; }
         public bool IsActive { get; set; }
 
-
+       public void DecreaseStock(int quantity)
+       {
+            if (quantity <= 0) throw new ArgumentException("La cantidad a descontar debe ser mayor a cero");
+            if (quantity > StockQuantity) throw new ArgumentException("No hay suficiente stock para descontar la cantidad solicitada");
+            StockQuantity -= quantity;
+       }
         // public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>(); //Opcional- Si querés navegación inversa desde Product hacia OrderItems
 
 

@@ -25,9 +25,9 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddHealthChecks();
 
-        builder.Services.AddScoped<Dsw2025Tpi.Domain.Interfaces.IRepository, Dsw2025Tpi.Data.Repositories.InMemory>(); // PARA JSON
+        //builder.Services.AddScoped<Dsw2025Tpi.Domain.Interfaces.IRepository, Dsw2025Tpi.Data.Repositories.InMemory>(); // PARA JSON
 
-        //builder.Services.AddScoped<Dsw2025Tpi.Domain.Interfaces.IRepository, Dsw2025Tpi.Data.Repositories.EfRepository>(); //PARA SQL SERVER
+        builder.Services.AddScoped<Dsw2025Tpi.Domain.Interfaces.IRepository, Dsw2025Tpi.Data.Repositories.EfRepository>(); //PARA SQL SERVER
         
         builder.Services.AddScoped<ProductsManagementService>();
         builder.Services.AddScoped<OrderManagementService>();

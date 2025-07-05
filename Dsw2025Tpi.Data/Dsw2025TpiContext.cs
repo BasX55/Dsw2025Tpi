@@ -51,6 +51,10 @@ public class Dsw2025TpiContext: DbContext
 
             mb.Property(oi => oi.Description)
                 .HasMaxLength(200);
+            mb.Property(oi => oi.UnitPrice)
+                .HasPrecision(18, 4); 
+
+
 
             mb.HasOne(oi => oi.Order)
                 .WithMany(o => o.OrderItems)

@@ -10,16 +10,39 @@ namespace Dsw2025Tpi.Application.Dtos
     public record OrderModel
     {
         public record Request(
-        Guid CustomerId,
-        string ShippingAddress,
-        string BillingAddress,
-        ICollection<OrderItem> OrderItems);
+         Guid CustomerId,
+         string ShippingAddress,
+         string BillingAddress,
+         ICollection<OrderItem> OrderItems);
+
         public record OrderItem(
             Guid ProductId,
             int Quantity,
             string Name,
             decimal UnitPrice,
             string Description);
-        public record Response(Guid Id);
+
+        public record Response(
+            Guid Id,
+            DateTime Date,
+            Guid CustomerId,
+            string ShippingAddress,
+            string BillingAddress,
+            string Status,
+            decimal TotalAmount,
+            ICollection<OrderItemResponse> OrderItems);
+
+        public record OrderItemResponse(
+            Guid ProductId,
+            int Quantity,
+            decimal UnitPrice,
+            string Description);
+        public record ResponseId(
+           Guid Id);
+
+        public record UpdateStatusRequest(string NewStatus);
+
     }
+
+
 }
