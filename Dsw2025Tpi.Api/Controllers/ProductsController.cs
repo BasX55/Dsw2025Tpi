@@ -1,12 +1,14 @@
 ﻿using Dsw2025Ej15.Application.Dtos;
 using Dsw2025Ej15.Application.Services;
 using Dsw2025Tpi.Application.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace Dsw2025Ej15.Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "ADMINISTRADOR")]
 [Route("api/products")]
 public class ProductsController : ControllerBase
 {
@@ -17,7 +19,9 @@ public class ProductsController : ControllerBase
         _service = service;
     }
 
+
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetProducts()
     {
         var products = await _service.GetProducts();

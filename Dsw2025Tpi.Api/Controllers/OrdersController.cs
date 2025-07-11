@@ -2,6 +2,7 @@ using Dsw2025Ej15.Application.Services;
 using Dsw2025Tpi.Application.Dtos;
 using Dsw2025Tpi.Application.Exceptions;
 using Dsw2025Tpi.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Dsw2025Tpi.Application.Dtos.OrderModel;
 
@@ -18,6 +19,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "CLIENTE")]
     public async Task<IActionResult> AddOrder([FromBody] OrderModel.Request request)
     {
         if (!ModelState.IsValid)
@@ -45,6 +47,7 @@ public class OrderController : ControllerBase
 
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "ADMINISTRADOR")]
     public async Task<IActionResult> GetOrderById(Guid id)
     {
         if (id == Guid.Empty)
@@ -63,6 +66,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "ADMINISTRADOR, CLIENTE")]
     public async Task<IActionResult> GetAllOrders()
     {
         try
@@ -76,6 +80,7 @@ public class OrderController : ControllerBase
         }
     }
     [HttpPut("{id}/status")]
+    [Authorize(Roles = "ADMINISTRADOR")]
     public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] UpdateStatusRequest request)
     {
         if (id == Guid.Empty)
