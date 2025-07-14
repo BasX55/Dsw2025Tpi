@@ -1,6 +1,7 @@
 ﻿using Dsw2025Tpi.Domain.Entities;
 using Dsw2025Tpi.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Dsw2025Tpi.Data.Repositories;
@@ -43,11 +44,16 @@ public class EfRepository: IRepository
         return await Include(_context.Set<T>(), include).FirstOrDefaultAsync(e => e.Id == id);
     }
 
-    public async Task<IEnumerable<T>?> GetFiltered<T>(Expression<Func<T, bool>> predicate, params string[] include) where T : EntityBase
+    public async Task<IEnumerable<T>?> GetFiltered<T>(Expression<Func<T,bool>> predicate, params string[] include) where T : EntityBase
     {
+        
         return await Include(_context.Set<T>(), include).Where(predicate).ToListAsync();
     }
-
+    public async Task<IEnumerable<T>?> GetFiltered<T>(Func<IQueryable<T>, IQueryable<T>> queryBuilder, params string[] include) where T : EntityBase
+    {
+        var query = Include(_context.Set<T>(), include);
+        return await queryBuilder(query).ToListAsync();
+    }
     public async Task<T?> Update<T>(T entity) where T : EntityBase
     {
         try

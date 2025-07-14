@@ -125,6 +125,10 @@ public class OrderManagementService
                 oi.Description)).ToList()
         );
     }
+    
+
+
+    
     public async Task<IEnumerable<OrderModel.Response>> GetAllOrders(string? status, Guid? customerId, int? pageNumber, int? pageSize)
     {
         var orders = await _repository.GetAll<Order>("OrderItems");
@@ -148,6 +152,7 @@ public class OrderManagementService
         }
         else
         {
+            
             if (status != null)
             {
                 if(!Enum.TryParse<OrderStatus>(status, true, out var parsedStatus))
@@ -160,8 +165,10 @@ public class OrderManagementService
             
             if (customerId.HasValue)
             {
-                orders= await _repository.GetFiltered<Order>(o => o.CustomerID == customerId, "OrderItems");
+                orders= await _repository.GetFiltered<Order>(o => o.CustomerID == customerId.Value, "OrderItems");
             }
+
+
             return orders.Select(order => new OrderModel.Response(
             order.Id,
             order.Date,
