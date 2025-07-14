@@ -1,0 +1,32 @@
+[
+    {
+        "Id": "34ce4766-4236-4839-b9e5-12dec6321102",
+        "Name": "Lucas Fernández",
+        "Email": "lucas.fernandez@example.com",
+        "PhoneNumber": "+54 11 5555 1234"
+    },
+    {
+        "Id": "d8904f88-cde0-4f8e-b1f9-cf8f68e97aa9",
+        "Name": "María López",
+        "Email": "maria.lopez@example.com",
+        "PhoneNumber": "+54 11 5555 5678"
+    },
+    {
+        "Id": "f23d5a56-37c1-4bb8-9527-093e4fc56c78",
+        "Name": "Javier Gómez",
+        "Email": "javier.gomez@example.com",
+        "PhoneNumber": "+54 11 5555 8765"
+    },
+    {
+        "Id": "a12cbe94-b99d-4c24-a0df-fc77436af5b3",
+        "Name": "Carla Méndez",
+        "Email": "carla.mendez@example.com",
+        "PhoneNumber": "+54 11 5555 4321"
+    },
+    {
+        "Id": "63d7c1e9-6a40-4e1e-b57a-85e99d798fa1",
+        "Name": "Santiago Ruiz",
+        "Email": "santiago.ruiz@example.com",
+        "PhoneNumber": "+54 11 5555 6789"
+    }
+]

@@ -13,6 +13,7 @@ namespace Dsw2025Tpi.Application.Dtos
          Guid CustomerId,
          string ShippingAddress,
          string BillingAddress,
+         string Notes,
          ICollection<OrderItem> OrderItems);
 
         public record OrderItem(
@@ -28,6 +29,7 @@ namespace Dsw2025Tpi.Application.Dtos
             Guid CustomerId,
             string ShippingAddress,
             string BillingAddress,
+            string Notes,
             string Status,
             decimal TotalAmount,
             ICollection<OrderItemResponse> OrderItems);

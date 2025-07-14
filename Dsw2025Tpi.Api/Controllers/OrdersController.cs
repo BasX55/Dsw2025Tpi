@@ -24,7 +24,7 @@ public class OrderController : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-
+        
         try
         {
            
@@ -67,11 +67,11 @@ public class OrderController : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = "ADMINISTRADOR, CLIENTE")]
-    public async Task<IActionResult> GetAllOrders()
+    public async Task<IActionResult> GetAllOrders(string? status,Guid? customerId,int? pageNumber,int? pageSize)
     {
         try
         {
-            var orders = await _service.GetAllOrders();
+            var orders = await _service.GetAllOrders(status,customerId,pageNumber,pageSize);
             return Ok(orders);
         }
         catch (Exception)

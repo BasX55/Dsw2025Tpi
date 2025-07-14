@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace Dsw2025Tpi.Data.Migrations
+namespace Dsw2025Tpi.Data.Migrations.Authenticate
 {
     /// <inheritdoc />
-    public partial class Pruebas23 : Migration
+    public partial class actualizar2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
