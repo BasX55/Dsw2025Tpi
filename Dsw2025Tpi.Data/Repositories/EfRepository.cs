@@ -49,11 +49,7 @@ public class EfRepository: IRepository
         
         return await Include(_context.Set<T>(), include).Where(predicate).ToListAsync();
     }
-    public async Task<IEnumerable<T>?> GetFiltered<T>(Func<IQueryable<T>, IQueryable<T>> queryBuilder, params string[] include) where T : EntityBase
-    {
-        var query = Include(_context.Set<T>(), include);
-        return await queryBuilder(query).ToListAsync();
-    }
+    
     public async Task<T?> Update<T>(T entity) where T : EntityBase
     {
         try
