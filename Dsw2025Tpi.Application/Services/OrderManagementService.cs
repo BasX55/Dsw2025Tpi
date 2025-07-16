@@ -168,6 +168,13 @@ public class OrderManagementService
                 orders= await _repository.GetFiltered<Order>(o => o.CustomerID == customerId.Value, "OrderItems");
             }
 
+            if (pageNumber.HasValue && pageSize.HasValue && pageNumber > 0 && pageSize > 0)
+            {
+                orders = orders
+                    .OrderBy(o => o.Date) // O el campo que prefieras para ordenar
+                    .Skip((pageNumber.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+            }
 
             return orders.Select(order => new OrderModel.Response(
             order.Id,
