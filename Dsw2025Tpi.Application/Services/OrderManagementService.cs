@@ -1,5 +1,4 @@
-﻿using Dsw2025Ej15.Application.Services;
-using Dsw2025Tpi.Application.Dtos;
+﻿using Dsw2025Tpi.Application.Dtos;
 using Dsw2025Tpi.Domain.Entities;
 using Dsw2025Tpi.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -70,7 +69,7 @@ public class OrderManagementService
         //modificar stock de los productos
         foreach (var item in order.OrderItems)
         {
-            // Specify the type explicitly for the generic method GetById<T>
+            
             var product = await _repository.GetById<Product>(item.ProductId);
             if (product == null)
             {
@@ -81,7 +80,7 @@ public class OrderManagementService
             {
                 throw new ArgumentException($"No hay suficiente stock para el producto {product.Name}. Stock disponible: {product.StockQuantity}, cantidad solicitada: {item.Quantity}.");
             }
-            //product.StockQuantity -= item.Quantity;
+            
             product.DecreaseStock(item.Quantity);
             await _repository.Update<Product>(product);
            
@@ -171,7 +170,7 @@ public class OrderManagementService
             if (pageNumber.HasValue && pageSize.HasValue && pageNumber > 0 && pageSize > 0)
             {
                 orders = orders
-                    .OrderBy(o => o.Date) // O el campo que prefieras para ordenar
+                    .OrderBy(o => o.Date) 
                     .Skip((pageNumber.Value - 1) * pageSize.Value)
                     .Take(pageSize.Value);
             }
@@ -213,7 +212,7 @@ public class OrderManagementService
             throw new ArgumentException($"El estado '{status}' no es válido.");
         }
 
-        order.Status = parsedStatus; // o guardás el enum directamente si tu modelo lo permite
+        order.Status = parsedStatus; 
         
         await _repository.Update(order);
 

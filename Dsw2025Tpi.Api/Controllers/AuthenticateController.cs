@@ -40,7 +40,7 @@ namespace Dsw2025Tpi.Application.Dtos
                 return Unauthorized("Invalid username or password");
             }
             var roles = await _userManager.GetRolesAsync(user);
-            var rolAsignado = roles.FirstOrDefault()?.ToUpper(); // Solo se permite uno
+            var rolAsignado = roles.FirstOrDefault()?.ToUpper(); 
 
             if (rolAsignado is null)
                 return Unauthorized("El usuario no tiene ningún rol asignado.");
@@ -60,7 +60,7 @@ namespace Dsw2025Tpi.Application.Dtos
                 return BadRequest("Invalid registration request");
             }
             
-            // Assign default role
+            
             string[] rolesPermitidos = { "ADMINISTRADOR", "CLIENTE" };
 
             if (!rolesPermitidos.Contains(registerModel.Role.ToUpper()))
@@ -80,7 +80,7 @@ namespace Dsw2025Tpi.Application.Dtos
             return Ok("User registered successfully");
         }
 
-        [HttpGet("crear-rol/{nombre}")]
+        [HttpPost("crear-rol/{nombre}")]
         public async Task<IActionResult> CrearRol(string nombre, [FromServices] RoleManager<IdentityRole> roleManager)
         {
             if (await roleManager.RoleExistsAsync(nombre))

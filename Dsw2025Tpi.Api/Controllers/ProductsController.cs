@@ -1,11 +1,12 @@
-﻿using Dsw2025Ej15.Application.Dtos;
-using Dsw2025Ej15.Application.Services;
+﻿using Dsw2025Tpi.Application.Dtos;
+using Dsw2025Tpi.Application.Services;
 using Dsw2025Tpi.Application.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace Dsw2025Ej15.Api.Controllers;
+
+namespace Dsw2025Tpi.Api.Controllers;
 
 [ApiController]
 [Authorize(Roles = "ADMINISTRADOR")]
@@ -54,7 +55,7 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddProduct([FromBody] ProductModel.RequestP request)
     {
-        //verificar si los datos que envió el cliente en el cuerpo de la solicitud son válidos según las reglas del modelo
+        
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 

@@ -1,5 +1,5 @@
-using Dsw2025Ej15.Application.Dtos;
-using Dsw2025Ej15.Application.Services;
+using Dsw2025Tpi.Application.Dtos;
+using Dsw2025Tpi.Application.Services;
 using Dsw2025Tpi.Application.Services;
 using Dsw2025Tpi.Data;
 using Dsw2025Tpi.Domain;
@@ -94,13 +94,14 @@ public class Program
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
             });
-        //builder.Services.AddScoped<Dsw2025Tpi.Domain.Interfaces.IRepository, Dsw2025Tpi.Data.Repositories.InMemory>(); // PARA JSON
+        
 
         builder.Services.AddScoped<Dsw2025Tpi.Domain.Interfaces.IRepository, Dsw2025Tpi.Data.Repositories.EfRepository>(); //PARA SQL SERVER
         
         builder.Services.AddScoped<ProductsManagementService>();
         builder.Services.AddScoped<OrderManagementService>();
         builder.Services.AddSingleton<JwtTokenService>();
+        builder.Services.AddScoped<CustomerManagementService>();
 
 
 
@@ -118,7 +119,7 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        
         app.UseHttpsRedirection();
 
         app.UseAuthentication();

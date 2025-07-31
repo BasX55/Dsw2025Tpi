@@ -1,10 +1,10 @@
-﻿using Dsw2025Ej15.Application.Dtos;
+﻿using Dsw2025Tpi.Application.Dtos;
 using Dsw2025Tpi.Application.Exceptions;
 using Dsw2025Tpi.Domain.Entities;
 using Dsw2025Tpi.Domain.Interfaces;
 
 
-namespace Dsw2025Ej15.Application.Services;
+namespace Dsw2025Tpi.Application.Services;
 
 public class ProductsManagementService
 {

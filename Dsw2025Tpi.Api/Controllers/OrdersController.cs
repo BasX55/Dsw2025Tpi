@@ -1,4 +1,3 @@
-using Dsw2025Ej15.Application.Services;
 using Dsw2025Tpi.Application.Dtos;
 using Dsw2025Tpi.Application.Exceptions;
 using Dsw2025Tpi.Application.Services;
@@ -90,7 +89,6 @@ public class OrderController : ControllerBase
         try
         {
             var updatedOrder = await _service.UpdateOrderStatus(id, request.NewStatus);
-            //var updatedOrder = await _service.UpdateOrderStatus(id, request);
             if (updatedOrder == null)
                 return NotFound("Orden no encontrada");
             return Ok(updatedOrder);
