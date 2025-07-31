@@ -205,12 +205,19 @@ public class OrderManagementService
         var order = await _repository.GetById<Order>(id);
         if (order == null)
         {
-            throw new ArgumentException($"No existe una orden con el ID {id}");
+            return null;
         }
         if (!Enum.TryParse<OrderStatus>(status, true, out var parsedStatus))
         {
             throw new ArgumentException($"El estado '{status}' no es válido.");
         }
+
+        if (order.Status == parsedStatus)
+        {
+            
+            return new OrderModel.ResponseId(order.Id);
+        }
+
 
         order.Status = parsedStatus; 
         

@@ -28,7 +28,7 @@ public class OrderController : ControllerBase
         {
            
             var order = await _service.AddOrder(request);
-            return Ok(order);
+            return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order);
         }
         catch (ArgumentException ae)
         {
@@ -72,6 +72,10 @@ public class OrderController : ControllerBase
         {
             var orders = await _service.GetAllOrders(status,customerId,pageNumber,pageSize);
             return Ok(orders);
+        }
+        catch (ArgumentException ae)
+        {
+            return BadRequest(ae.Message);
         }
         catch (Exception)
         {
