@@ -28,7 +28,7 @@ public class ProductsManagementService
             string.IsNullOrWhiteSpace(request.Name) ||
             string.IsNullOrWhiteSpace(request.InternalCode)||
             string.IsNullOrWhiteSpace(request.Description) ||
-            request.StockQuantity <= 0 ||
+            request.StockQuantity < 0 ||
             request.CurrentUnitPrice <= 0)   
         {
             throw new ArgumentException("Valores para el producto no válidos");
@@ -39,7 +39,7 @@ public class ProductsManagementService
 
         var product = new Product(request.Sku, request.InternalCode, request.Name, request.Description, (decimal)request.CurrentUnitPrice, request.StockQuantity, true);
         product.Id = Guid.NewGuid();
-        var lista = await _repository.Add(product);
+        await _repository.Add(product);
 
         return new ProductModel.Response(product.Id);
     }

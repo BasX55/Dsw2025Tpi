@@ -20,7 +20,7 @@ public class OrderManagementService
     }
     public async Task<OrderModel.Response> AddOrder(OrderModel.Request request)
     {
-        
+
         if (string.IsNullOrWhiteSpace(request.ShippingAddress) ||
             string.IsNullOrWhiteSpace(request.BillingAddress))
         {
@@ -30,7 +30,7 @@ public class OrderManagementService
         {
             throw new ArgumentException("Debe incluir al menos un producto en la orden");
         }
-        if (request.OrderItems.Any(p => p.Quantity <= 0 || p.UnitPrice <= 0))
+        if (request.OrderItems.Any(p => p.Quantity <= 0))
         {
             throw new ArgumentException("Los valores de cantidad y precio unitario deben ser mayores a cero");
         }
@@ -38,62 +38,61 @@ public class OrderManagementService
         {
             throw new ArgumentException("El ProductId no puede ser un Guid vacío");
         }
-        
-        
+
+
+
         if (request.CustomerId == Guid.Empty)
         {
             throw new ArgumentException("El CustomerId no puede ser un Guid vacío");
         }
-        
-       
         var order = new Order
         {
             Id = Guid.NewGuid(),
             CustomerID = request.CustomerId,
             Date = DateTime.UtcNow,
-            Notes = request.Notes,
-            
+
             OrderItems = request.OrderItems.Select(p => new OrderItem
             {
                 ProductId = p.ProductId,
-                Quantity = p.Quantity,
-                UnitPrice = p.UnitPrice,
-                Description = p.Description
+                Quantity = p.Quantity
             }).ToList(),
 
             ShippingAddress = request.ShippingAddress,
             BillingAddress = request.BillingAddress,
         };
+
         order.Status = 0;
-        order.Notes = order.Notes == "string" ? "" : order.Notes;
+
         //modificar stock de los productos
         foreach (var item in order.OrderItems)
         {
-            
+
             var product = await _repository.GetById<Product>(item.ProductId);
             if (product == null)
             {
                 throw new ArgumentException($"El producto con ID {item.ProductId} no existe.");
             }
-            
+
             if (product.StockQuantity < item.Quantity)
             {
                 throw new ArgumentException($"No hay suficiente stock para el producto {product.Name}. Stock disponible: {product.StockQuantity}, cantidad solicitada: {item.Quantity}.");
             }
+
             
             product.DecreaseStock(item.Quantity);
+            item.UnitPrice = product.CurrentUnitPrice;
+            item.Description = product.Description;
+
             await _repository.Update<Product>(product);
-           
 
         }
 
         await _repository.Add(order);
-        return new OrderModel.Response(order.Id, order.Date, order.CustomerID, 
-            order.ShippingAddress, order.BillingAddress,order.Notes ,order.Status.ToString(), 
+        return new OrderModel.Response(order.Id, order.Date, order.CustomerID,
+            order.ShippingAddress, order.BillingAddress, order.Status.ToString(),
             order.TotalAmount, order.OrderItems.Select(oi => new OrderModel.OrderItemResponse(
                 oi.ProductId, oi.Quantity, oi.UnitPrice, oi.Description)).ToList());
     }
-
     public async Task<OrderModel.Response?> GetOrderById(Guid id)
     {
         if (id == Guid.Empty)
@@ -114,7 +113,6 @@ public class OrderManagementService
             order.CustomerID,
             order.ShippingAddress,
             order.BillingAddress,
-            order.Notes,
             order.Status.ToString(),
             order.TotalAmount,
             orderItems.Select(oi => new OrderModel.OrderItemResponse(
@@ -139,7 +137,6 @@ public class OrderManagementService
             order.CustomerID,
             order.ShippingAddress,
             order.BillingAddress,
-            order.Notes,
             order.Status.ToString(),
             order.TotalAmount,
             order.OrderItems.Select(oi => new OrderModel.OrderItemResponse(
@@ -151,8 +148,20 @@ public class OrderManagementService
         }
         else
         {
-            
-            if (status != null)
+            if (status != null && customerId.HasValue)
+            {
+                if (!Enum.TryParse<OrderStatus>(status, true, out var parsedStatus))
+                {
+                    throw new ArgumentException($"El estado '{status}' no es válido.");
+                }
+
+                orders = await _repository.GetFiltered<Order>(
+                    o => o.Status == parsedStatus && o.CustomerID == customerId.Value,
+                    "OrderItems"
+                );
+            }
+
+            else if (status != null)
             {
                 if(!Enum.TryParse<OrderStatus>(status, true, out var parsedStatus))
                 {
@@ -162,7 +171,7 @@ public class OrderManagementService
             }
 
             
-            if (customerId.HasValue)
+            else if (customerId.HasValue)
             {
                 orders= await _repository.GetFiltered<Order>(o => o.CustomerID == customerId.Value, "OrderItems");
             }
@@ -181,7 +190,6 @@ public class OrderManagementService
             order.CustomerID,
             order.ShippingAddress,
             order.BillingAddress,
-            order.Notes,
             order.Status.ToString(),
             order.TotalAmount,
             order.OrderItems.Select(oi => new OrderModel.OrderItemResponse(

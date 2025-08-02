@@ -119,12 +119,13 @@ public class ProductsController : ControllerBase
             var product = await _service.GetProductById(id);
             if (product == null) return NotFound();
             await _service.DeleteProduct(id);
-            return Ok(product);
+            return NoContent();
         }
         catch (Exception)
         {
             return Problem("Se produjo un error al eliminar el producto");
         }
+
     }
 
 }

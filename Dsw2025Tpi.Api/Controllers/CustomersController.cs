@@ -44,9 +44,34 @@ public class CustomersController : ControllerBase
 
         return Ok(customer);
     }
-    
-    
 
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> AddCustomer([FromBody] CustomerModel.Request request)
+    {
+
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        try
+        {
+            var product = await _service.AddCustomer(request);
+            return StatusCode(StatusCodes.Status201Created, product);
+        }
+        catch (ArgumentException ae)
+        {
+            return BadRequest(ae.Message);
+        }
+        catch (DuplicatedEntityException de)
+        {
+            return Conflict(de.Message);
+        }
+        catch (Exception)
+        {
+            return Problem("Se produjo un error al guardar el cliente");
+        }
+    }
 
 
 

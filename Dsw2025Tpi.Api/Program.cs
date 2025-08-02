@@ -57,6 +57,7 @@ public class Program
                     Array.Empty<string>()
                 }
             });
+            o.CustomSchemaIds(type => type.FullName.Replace("+", "."));
         } );
         builder.Services.AddHealthChecks();
 
