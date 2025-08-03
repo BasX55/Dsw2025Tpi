@@ -2,11 +2,14 @@
 
 public record ProductModel
 {
-    public record Request(string Sku,string InternalCode, string Name, string Description, decimal CurrentUnitPrice, int StockQuantity, bool IsActive);
+    
     public record PatchRequest( bool? IsActive);
     public record RequestP(string Sku, string InternalCode, string Name, string Description, decimal CurrentUnitPrice, int StockQuantity);
 
    
 
-    public record Response(Guid Id);
+   
+    public record ProductResponse(Guid Id, string Sku, string InternalCode, string Name, string Description,
+        decimal CurrentUnitPrice, int StockQuantity, bool IsActive);
+    public record GetResponse(string Sku, string InternalCode, string Name, string Description, decimal CurrentUnitPrice, int StockQuantity);
 }

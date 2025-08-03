@@ -21,18 +21,34 @@ public class OrderController : ControllerBase
     [Authorize(Roles = "CLIENTE")]
     public async Task<IActionResult> AddOrder([FromBody] OrderModel.Request request)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-        
         try
         {
-           
             var order = await _service.AddOrder(request);
             return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order);
+        }
+        catch (ArgumentNullException ane)
+        {
+            return BadRequest(ane.Message);
         }
         catch (ArgumentException ae)
         {
             return BadRequest(ae.Message);
+        }
+        catch (EntityNotFoundException enf)
+        {
+            return NotFound(enf.Message);
+        }
+        catch (InsufficientStockException ise)
+        {
+            return UnprocessableEntity(ise.Message); 
+        }
+        catch (InactiveProductException ipa)
+        {
+            return UnprocessableEntity(ipa.Message); 
+        }
+        catch (InvalidProductPriceException ippe)
+        {
+            return UnprocessableEntity(ippe.Message); 
         }
         catch (DuplicatedEntityException de)
         {
@@ -49,14 +65,18 @@ public class OrderController : ControllerBase
     [Authorize(Roles = "ADMINISTRADOR")]
     public async Task<IActionResult> GetOrderById(Guid id)
     {
-        if (id == Guid.Empty)
-            return BadRequest("El ID de la orden no puede ser un Guid vacío");
         try
         {
             var order = await _service.GetOrderById(id);
-            if (order == null)
-                return NotFound("Orden no encontrada");
             return Ok(order);
+        }
+        catch (ArgumentException ae)
+        {
+            return BadRequest(ae.Message);
+        }
+        catch (EntityNotFoundException enf)
+        {
+            return NotFound(enf.Message);
         }
         catch (Exception)
         {
@@ -66,44 +86,58 @@ public class OrderController : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = "ADMINISTRADOR, CLIENTE")]
-    public async Task<IActionResult> GetAllOrders(string? status,Guid? customerId,int? pageNumber,int? pageSize)
+    public async Task<IActionResult> GetAllOrders(
+    [FromQuery] string? status,
+    [FromQuery] Guid? customerId,
+    [FromQuery] int? pageNumber,
+    [FromQuery] int? pageSize)
     {
         try
         {
-            var orders = await _service.GetAllOrders(status,customerId,pageNumber,pageSize);
+            var orders = await _service.GetAllOrders(status, customerId, pageNumber, pageSize);
+
+            if (!orders.Any())
+                return NotFound("No se encontraron órdenes con los criterios especificados.");
+
             return Ok(orders);
         }
         catch (ArgumentException ae)
         {
             return BadRequest(ae.Message);
         }
+        catch (EntityNotFoundException enf)
+        {
+            return NotFound(enf.Message);
+        }
         catch (Exception)
         {
-            return Problem("Se produjo un error al obtener las órdenes");
+            return Problem("Se produjo un error al obtener las órdenes.");
         }
     }
+
     [HttpPut("{id}/status")]
     [Authorize(Roles = "ADMINISTRADOR")]
     public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] UpdateStatusRequest request)
     {
-        if (id == Guid.Empty)
-            return BadRequest("El ID de la orden no puede ser un Guid vacío");
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
+
         try
         {
             var updatedOrder = await _service.UpdateOrderStatus(id, request.NewStatus);
-            if (updatedOrder == null)
-                return NotFound("Orden no encontrada");
             return Ok(updatedOrder);
         }
         catch (ArgumentException ae)
         {
             return BadRequest(ae.Message);
         }
+        catch (EntityNotFoundException enf)
+        {
+            return NotFound(enf.Message);
+        }
         catch (Exception)
         {
-            return Problem("Se produjo un error al actualizar el estado de la orden");
+            return Problem("Se produjo un error al actualizar el estado de la orden.");
         }
     }
 }

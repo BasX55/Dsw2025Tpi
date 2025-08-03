@@ -25,44 +25,54 @@ public class ProductsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetProducts()
     {
-        var products = await _service.GetProducts();
-        if (products == null || !products.Any()) return NoContent();
-        var result = products
-    .Where(p => p.IsActive)
-    .Select(p => new
-    {
-        p.Sku,
-        p.Name,
-        p.InternalCode,
-        p.Description,
-        p.CurrentUnitPrice,
-        p.StockQuantity
-    })
-    .ToList();
+        try 
+        {
+            var products = await _service.GetProducts();
+            if (products == null || !products.Any())
+                return NoContent();
 
-        return Ok(result);
+            return Ok(products);
+        }
+        catch (Exception)
+        {
+            return Problem("Se produjo un error al obtener los productos");
+        }
+
     }
 
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProductById(Guid id)
     {
-        var product = await _service.GetProductById(id);
-        if (product == null) return NotFound();
-        return Ok(product);
+        try
+        {
+            var product = await _service.GetProductById(id);
+            return Ok(product);
+        }
+        catch (ArgumentException ae)
+        {
+            return BadRequest(ae.Message);
+        }
+        catch (EntityNotFoundException enf)
+        {
+            return NotFound(enf.Message);
+        }
+        catch (Exception)
+        {
+            return Problem("Se produjo un error al obtener el producto.");
+        }
     }
+
 
     [HttpPost]
     public async Task<IActionResult> AddProduct([FromBody] ProductModel.RequestP request)
     {
-        
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-
         try
         {
             var product = await _service.AddProduct(request);
-            return StatusCode(StatusCodes.Status201Created, product);
+            return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
         }
         catch (ArgumentException ae)
         {
@@ -83,11 +93,20 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            var product = await _service.GetProductById(id);
-            if (product == null) return NotFound();
             var updatedProduct = await _service.PutProduct(id, request);
             return Ok(updatedProduct);
-
+        }
+        catch (EntityNotFoundException enf)
+        {
+            return NotFound(enf.Message);
+        }
+        catch (ArgumentException ae)
+        {
+            return BadRequest(ae.Message);
+        }
+        catch (DuplicatedEntityException de)
+        {
+            return Conflict(de.Message);
         }
         catch (Exception)
         {
@@ -100,10 +119,12 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            var product = await _service.GetProductById(id);
-            if (product == null) return NotFound();
             await _service.PathProduct(id, request);
             return NoContent();
+        }
+        catch (EntityNotFoundException enf)
+        {
+            return NotFound(enf.Message);
         }
         catch (Exception)
         {
@@ -116,10 +137,12 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            var product = await _service.GetProductById(id);
-            if (product == null) return NotFound();
             await _service.DeleteProduct(id);
             return NoContent();
+        }
+        catch (EntityNotFoundException enf)
+        {
+            return NotFound(enf.Message);
         }
         catch (Exception)
         {

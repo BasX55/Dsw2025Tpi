@@ -39,7 +39,12 @@ namespace Dsw2025Tpi.Application.Services
 
             };
             await _repository.Add(customer);
-            return new CustomerModel.Response(customer.Id, customer.Name, customer.Email, customer.PhoneNumber);
+            return new CustomerModel.Response(
+                customer.Id,
+                customer.Name,
+                customer.Email,
+                customer.PhoneNumber
+            );
         }
         public async Task<CustomerModel.Response?> GetCustomerById(Guid id)
         {
@@ -52,12 +57,26 @@ namespace Dsw2025Tpi.Application.Services
             {
                 return null;
             }
-            return new CustomerModel.Response(customer.Id, customer.Name, customer.Email, customer.PhoneNumber);
+            return new CustomerModel.Response(
+                customer.Id,
+                customer.Name,
+                customer.Email,
+                customer.PhoneNumber
+            );
         }
         public async Task<List<CustomerModel.Response>> GetAllCustomers()
         {
             var customers = await _repository.GetAll<Customer>();
-            return customers.Select(c => new CustomerModel.Response(c.Id, c.Name, c.Email, c.PhoneNumber)).ToList();
+            if (customers == null || !customers.Any())
+            {
+                throw new KeyNotFoundException("No existen clientes");
+            }
+            return customers.Select(c => new CustomerModel.Response(
+                c.Id,
+                c.Name,
+                c.Email,
+                c.PhoneNumber
+            )).ToList();
         }
     }
 }
