@@ -94,10 +94,6 @@ public class OrderController : ControllerBase
         try
         {
             var orders = await _service.GetAllOrders(status, customerId, pageNumber, pageSize);
-
-            if (!orders.Any())
-                return NotFound("No se encontraron órdenes con los criterios especificados.");
-
             return Ok(orders);
         }
         catch (ArgumentException ae)

@@ -26,7 +26,6 @@ public class OrderManagementService
 
         if (string.IsNullOrWhiteSpace(request.ShippingAddress) ||
             string.IsNullOrWhiteSpace(request.BillingAddress))
-        
             throw new ArgumentException("No puede estar vacía el Shipping Address ni el BillingAddress");
 
         if (request.OrderItems == null)
@@ -142,57 +141,44 @@ public class OrderManagementService
         _logger.LogInformation("Obteniendo todas las órdenes con los filtros proporcionados");
         var orders = await _repository.GetAll<Order>("OrderItems") ??
             throw new EntityNotFoundException("No existen órdenes registradas");
-        if ((status == null) && (customerId == null) && (pageNumber == null) && (pageSize == null))
+        
+        
+        if (status != null && customerId.HasValue)
         {
-            return orders.Select(order => new OrderModel.Response(
-            order.Id,
-            order.Date,
-            order.CustomerID,
-            order.ShippingAddress,
-            order.BillingAddress,
-            order.Status.ToString(),
-            order.TotalAmount,
-            order.OrderItems.Select(oi => new OrderModel.OrderItemResponse(
-                oi.ProductId,
-                oi.Quantity,
-                oi.UnitPrice,
-                oi.Description)).ToList()
-            ));
+            if (!Enum.TryParse<OrderStatus>(status, true, out var parsedStatus))   
+                throw new ArgumentException($"El estado '{status}' no es válido.");
+
+            orders = await _repository.GetFiltered<Order>(
+                o => o.Status == parsedStatus && o.CustomerID == customerId.Value,
+                "OrderItems"
+            );
+
+            if( orders == null || !orders.Any())
+                throw new EntityNotFoundException($"No se encontraron órdenes para el cliente con ID {customerId.Value} y estado {status}");
         }
-        else
+        else if (status != null)
         {
-            if (status != null && customerId.HasValue)
-            {
-                if (!Enum.TryParse<OrderStatus>(status, true, out var parsedStatus))   
-                    throw new ArgumentException($"El estado '{status}' no es válido."); 
-
-                orders = await _repository.GetFiltered<Order>(
-                    o => o.Status == parsedStatus && o.CustomerID == customerId.Value,
-                    "OrderItems"
-                ) ?? 
-                    throw new EntityNotFoundException($"No se encontraron órdenes para el cliente con ID {customerId.Value} y estado {status}");
-            }
-
-            else if (status != null)
-            {
-                if(!Enum.TryParse<OrderStatus>(status, true, out var parsedStatus))
-                    throw new ArgumentException($"El estado '{status}' no es válido.");
+            if(!Enum.TryParse<OrderStatus>(status, true, out var parsedStatus))
+                throw new ArgumentException($"El estado '{status}' no es válido.");
    
-                orders = await _repository.GetFiltered<Order>(o => o.Status == parsedStatus,"OrderItems");
-            }            
-            else if (customerId.HasValue)
-            {
-                orders= await _repository.GetFiltered<Order>(o => o.CustomerID == customerId.Value, "OrderItems") ?? 
-                    throw new EntityNotFoundException($"No se encontraron órdenes para el cliente con ID {customerId.Value}");
-            }
+            orders = await _repository.GetFiltered<Order>(o => o.Status == parsedStatus,"OrderItems");
+            if (orders == null || !orders.Any())
+                throw new EntityNotFoundException($"No se encontraron órdenes con el estado {status}");
+        }            
+        else if (customerId.HasValue)
+        {
+            orders = await _repository.GetFiltered<Order>(o => o.CustomerID == customerId.Value, "OrderItems");
+            if (orders == null || !orders.Any())
+                throw new EntityNotFoundException($"No se encontraron órdenes para el cliente con ID {customerId.Value}");
+        }
 
-            if (pageNumber.HasValue && pageSize.HasValue && pageNumber > 0 && pageSize > 0)
-                orders = orders
-                    .OrderBy(o => o.Date) 
-                    .Skip((pageNumber.Value - 1) * pageSize.Value)
-                    .Take(pageSize.Value);
+        if (pageNumber.HasValue && pageSize.HasValue && pageNumber > 0 && pageSize > 0)
+            orders = orders
+                .OrderBy(o => o.Date) 
+                .Skip((pageNumber.Value - 1) * pageSize.Value)
+                .Take(pageSize.Value);
 
-            return orders.Select(order => new OrderModel.Response(
+        return orders.Select(order => new OrderModel.Response(
             order.Id,
             order.Date,
             order.CustomerID,
@@ -206,7 +192,7 @@ public class OrderManagementService
                 oi.UnitPrice,
                 oi.Description)).ToList()
             )); 
-        }
+        
         
 
 
