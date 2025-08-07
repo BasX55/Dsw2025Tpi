@@ -3,7 +3,6 @@ using Dsw2025Tpi.Application.Exceptions;
 using Dsw2025Tpi.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Dsw2025Tpi.Application.Dtos.OrderModel;
 
 namespace Dsw2025Tpi.Api.Controllers;
 [ApiController]
@@ -117,7 +116,7 @@ public class OrderController : ControllerBase
 
     [HttpPut("{id}/status")]
     [Authorize(Roles = "ADMINISTRADOR")]
-    public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] UpdateStatusRequest request)
+    public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] OrderModel.UpdateStatusRequest request)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

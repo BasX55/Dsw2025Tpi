@@ -1,8 +1,5 @@
-using Dsw2025Tpi.Application.Dtos;
-using Dsw2025Tpi.Application.Services;
 using Dsw2025Tpi.Application.Services;
 using Dsw2025Tpi.Data;
-using Dsw2025Tpi.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,8 +15,17 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-
+        var path = "C:\\Log\\Tpi.txt";
         builder.Services.AddControllers();
+        builder.Services.AddLogging(config =>
+        {
+            config.AddConsole()
+            .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Error)
+            .AddFilter("Microsoft.AspNetCore", LogLevel.Information);
+
+            config.AddFile(path);
+
+        });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddDbContext<Dsw2025TpiContext>(options =>

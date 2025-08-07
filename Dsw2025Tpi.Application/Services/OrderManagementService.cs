@@ -2,25 +2,23 @@
 using Dsw2025Tpi.Application.Exceptions;
 using Dsw2025Tpi.Domain.Entities;
 using Dsw2025Tpi.Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Dsw2025Tpi.Application.Services;
 
 public class OrderManagementService
 {
     private readonly IRepository _repository;
-    
-    public OrderManagementService(IRepository repository)
+    private readonly ILogger<OrderManagementService> _logger;
+
+    public OrderManagementService(IRepository repository, ILogger<OrderManagementService> logger)
     {
+        _logger = logger;
         _repository = repository;
     }
     public async Task<OrderModel.Response> AddOrder(OrderModel.Request request)
     {
+        _logger.LogInformation("Iniciando el proceso de creación de una nueva orden");
         if (request.CustomerId == Guid.Empty)
             throw new ArgumentException("El CustomerId no puede ser un Guid vacío", nameof(request.CustomerId));
         var customer = await _repository.GetById<Customer>(request.CustomerId) ??
@@ -88,9 +86,11 @@ public class OrderManagementService
             item.Description = product.Description;
 
             await _repository.Update<Product>(product);
+            _logger.LogInformation($"Producto {product.Name} actualizado. Stock restante: {product.StockQuantity}");
         }
 
         await _repository.Add(order);
+        _logger.LogInformation($"Orden {order.Id} creada exitosamente para el cliente {customer.Name}");
         return new OrderModel.Response(
             order.Id, 
             order.Date, 
@@ -109,6 +109,7 @@ public class OrderManagementService
     }
     public async Task<OrderModel.Response?> GetOrderById(Guid id)
     {
+        _logger.LogInformation($"Buscando la orden con ID {id}");
         if (id == Guid.Empty)
             throw new ArgumentException("El ID de la orden no puede ser un Guid vacío");
         
@@ -138,6 +139,7 @@ public class OrderManagementService
     
     public async Task<IEnumerable<OrderModel.Response>> GetAllOrders(string? status, Guid? customerId, int? pageNumber, int? pageSize)
     {
+        _logger.LogInformation("Obteniendo todas las órdenes con los filtros proporcionados");
         var orders = await _repository.GetAll<Order>("OrderItems") ??
             throw new EntityNotFoundException("No existen órdenes registradas");
         if ((status == null) && (customerId == null) && (pageNumber == null) && (pageSize == null))
@@ -212,6 +214,7 @@ public class OrderManagementService
 
     public async Task<OrderModel.ResponseId> UpdateOrderStatus(Guid id, string status)
     {
+        _logger.LogInformation($"Actualizando el estado de la orden con ID {id} a {status}");
         if (id == Guid.Empty)
             throw new ArgumentException("El ID de la orden no puede ser un Guid vacío", nameof(id));
 
@@ -228,6 +231,7 @@ public class OrderManagementService
         order.Status = parsedStatus; 
         
         await _repository.Update(order);
+        _logger.LogInformation($"Estado de la orden {id} actualizado a {parsedStatus}");
 
         return new OrderModel.ResponseId(order.Id);
     }

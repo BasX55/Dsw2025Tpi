@@ -1,13 +1,7 @@
 ﻿using Dsw2025Tpi.Application.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dsw2025Tpi.Application.Dtos
 {
