@@ -45,7 +45,7 @@ public class ProductsManagementService
         var products = await _repository.GetFiltered<Product>(p => p.IsActive);
 
         if (products == null || !products.Any())
-            return new List<ProductModel.GetResponse>(); // No lanzar excepción
+            return new List<ProductModel.GetResponse>(); 
 
         return products.Select(p => new ProductModel.GetResponse(
             p.Sku,
@@ -82,7 +82,16 @@ public class ProductsManagementService
         
         if (exist != null) throw new DuplicatedEntityException($"Ya existe un producto con el Sku {request.Sku}");
 
-        var product = new Product(request.Sku, request.InternalCode, request.Name, request.Description, (decimal)request.CurrentUnitPrice, request.StockQuantity, true);
+        var product = new Product
+        {
+            Sku = request.Sku,
+            InternalCode = request.InternalCode,
+            Name = request.Name,
+            Description = request.Description,
+            CurrentUnitPrice = request.CurrentUnitPrice,
+            StockQuantity = request.StockQuantity,
+            IsActive = true
+        };
         product.Id = Guid.NewGuid();
         await _repository.Add(product);
         _logger.LogInformation($"Producto agregado con ID: {product.Id}");

@@ -10,7 +10,7 @@ namespace Dsw2025Tpi.Api;
 
 public class Program
 {
-    public static async Task Main(string[] args)
+    public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -63,7 +63,7 @@ public class Program
                     Array.Empty<string>()
                 }
             });
-            o.CustomSchemaIds(type => type.FullName.Replace("+", "."));
+            o.CustomSchemaIds(type => type.FullName?.Replace("+", "."));
         } );
         builder.Services.AddHealthChecks();
 

@@ -14,10 +14,10 @@
         }
 
         public Product() { }
-        public string InternalCode { get; set; }
-        public string Sku { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public required string InternalCode { get; set; }
+        public required string Sku { get; set; }
+        public required string Name { get; set; }
+        public required string Description { get; set; }
         public decimal CurrentUnitPrice { get; set; }
         public int StockQuantity { get; set; }
         public bool IsActive { get; set; }
@@ -28,8 +28,7 @@
             if (quantity > StockQuantity) throw new ArgumentException("No hay suficiente stock para descontar la cantidad solicitada");
             StockQuantity -= quantity;
        }
-        // public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>(); //Opcional- Si querés navegación inversa desde Product hacia OrderItems
-
+       
 
     }
 }

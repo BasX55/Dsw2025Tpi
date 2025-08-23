@@ -56,10 +56,7 @@ public class EfRepository: IRepository
            
             var existing = await _context.Set<T>().FindAsync(entity.Id);
             if (existing == null)
-            {
-                Console.WriteLine("No se encontró la entidad.");
-                return null;
-            }
+                throw new ArgumentException($"No se encontró la entidad con Id {entity.Id}");
 
             _context.Entry(existing).CurrentValues.SetValues(entity);
             await _context.SaveChangesAsync();
@@ -68,7 +65,7 @@ public class EfRepository: IRepository
         catch (Exception ex)
         {
             Console.WriteLine($" Error: {ex.Message}");
-            return null;
+            throw;
         }
     }
 

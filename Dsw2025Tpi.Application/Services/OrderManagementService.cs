@@ -52,7 +52,8 @@ public class OrderManagementService
             OrderItems = request.OrderItems.Select(p => new OrderItem
             {
                 ProductId = p.ProductId,
-                Quantity = p.Quantity
+                Quantity = p.Quantity,
+                Description = string.Empty
             }).ToList(),
 
             ShippingAddress = request.ShippingAddress,
@@ -115,7 +116,8 @@ public class OrderManagementService
         var order = await _repository.GetById<Order>(id) ?? 
             throw new EntityNotFoundException($"No se encontró la orden con ID {id}");
 
-        var orderItems = await _repository.GetFiltered<OrderItem>(oi => oi.OrderId == id, "Product");
+        var orderItems = await _repository.GetFiltered<OrderItem>(oi => oi.OrderId == id, "Product") ??
+            throw new EntityNotFoundException($"No se encontraron items de la orden con ID {id}");
         return new OrderModel.Response(
             order.Id,
             order.Date,
@@ -186,15 +188,13 @@ public class OrderManagementService
             order.BillingAddress,
             order.Status.ToString(),
             order.TotalAmount,
-            order.OrderItems.Select(oi => new OrderModel.OrderItemResponse(
-                oi.ProductId,
-                oi.Quantity,
-                oi.UnitPrice,
-                oi.Description)).ToList()
-            )); 
-        
-        
-
+                (order.OrderItems ?? Enumerable.Empty<OrderItem>())
+                .Select(oi => new OrderModel.OrderItemResponse(
+                    oi.ProductId,
+                    oi.Quantity,
+                    oi.UnitPrice,
+                    oi.Description)).ToList()
+));
 
     }
 

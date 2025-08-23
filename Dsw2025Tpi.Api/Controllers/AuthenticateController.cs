@@ -90,6 +90,8 @@ namespace Dsw2025Tpi.Application.Dtos
         public IActionResult VerRol()
         {
             var rol = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (rol is null)
+                return Unauthorized("No tienes un rol asignado.");
             return Ok($"Tu rol es: {rol}");
         }
     }

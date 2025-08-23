@@ -79,7 +79,7 @@ public class Dsw2025TpiContext: DbContext
                 .HasMaxLength(20);
 
             // Relación uno a muchos con Order
-            mb.HasMany(c => c.Orders)
+            mb.HasMany<Order>()
                 .WithOne(o => o.Customer)
                 .HasForeignKey(o => o.CustomerID)
                 .OnDelete(DeleteBehavior.Cascade);
