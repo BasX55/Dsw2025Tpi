@@ -25,8 +25,8 @@ public class OrderManagementService
             throw new EntityNotFoundException($"No se encontró el cliente con ID {request.CustomerId}");
 
         if (string.IsNullOrWhiteSpace(request.ShippingAddress) ||
-            string.IsNullOrWhiteSpace(request.BillingAddress))
-            throw new ArgumentException("No puede estar vacía el Shipping Address ni el BillingAddress");
+            string.IsNullOrWhiteSpace(request.BillingAddress) || string.IsNullOrWhiteSpace(request.Notes))
+            throw new ArgumentException("No puede estar vacía el Shipping Address ni el BillingAddress ni las Notes");
 
         if (request.OrderItems == null)
             throw new ArgumentNullException(nameof(request.OrderItems), "La lista de productos no puede ser nula");
@@ -43,6 +43,7 @@ public class OrderManagementService
         if (request.CustomerId == Guid.Empty)
             throw new ArgumentException("El CustomerId no puede ser un Guid vacío");
 
+
         var order = new Order
         {
             Id = Guid.NewGuid(),
@@ -58,6 +59,7 @@ public class OrderManagementService
 
             ShippingAddress = request.ShippingAddress,
             BillingAddress = request.BillingAddress,
+            Notes = request.Notes
         };
 
         order.Status = 0;
@@ -97,6 +99,7 @@ public class OrderManagementService
             order.CustomerID,
             order.ShippingAddress, 
             order.BillingAddress, 
+            order.Notes,
             order.Status.ToString(),
             order.TotalAmount, 
             order.OrderItems.Select(oi => new OrderModel.OrderItemResponse(
@@ -124,6 +127,7 @@ public class OrderManagementService
             order.CustomerID,
             order.ShippingAddress,
             order.BillingAddress,
+            order.Notes ?? string.Empty,
             order.Status.ToString(),
             order.TotalAmount,
             orderItems.Select(oi => new OrderModel.OrderItemResponse(
@@ -186,6 +190,7 @@ public class OrderManagementService
             order.CustomerID,
             order.ShippingAddress,
             order.BillingAddress,
+            order.Notes ?? string.Empty,
             order.Status.ToString(),
             order.TotalAmount,
                 (order.OrderItems ?? Enumerable.Empty<OrderItem>())

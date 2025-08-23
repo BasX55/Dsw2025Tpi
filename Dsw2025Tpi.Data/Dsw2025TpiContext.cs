@@ -42,6 +42,8 @@ public class Dsw2025TpiContext: DbContext
                 .HasMaxLength(100);
             mb.Property(o => o.Date)
                 .HasDefaultValueSql("getdate()");
+            mb.Property(o => o.Notes)
+                .HasMaxLength (100);
             mb.Ignore(o => o.TotalAmount);
         });
 
