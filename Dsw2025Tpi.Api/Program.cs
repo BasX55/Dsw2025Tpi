@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json;
 namespace Dsw2025Tpi.Api;
 
 public class Program
@@ -100,6 +101,21 @@ public class Program
                     ValidAudience = jwtConfig["Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
+                options.Events = new JwtBearerEvents
+                {
+                    OnForbidden = context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        context.Response.ContentType = "application/json";
+                        var result = JsonSerializer.Serialize(new
+                        {
+                            error = "Acceso denegado: su rol no tiene permiso para esta operación.",
+                            type = "Forbidden"
+                        });
+                        return context.Response.WriteAsync(result);
+                    }
+                };
+
             });
         
 
@@ -128,6 +144,8 @@ public class Program
         }
         
         app.UseHttpsRedirection();
+
+        app.UseMiddleware<ExceptionHandlerMiddleware>();
 
         app.UseAuthentication();
         app.UseAuthorization();

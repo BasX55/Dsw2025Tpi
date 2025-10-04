@@ -25,18 +25,13 @@ public class ProductsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetProducts()
     {
-        try 
-        {
-            var products = await _service.GetProducts();
-            if (products == null || !products.Any())
-                return NoContent();
+        var products = await _service.GetProducts();
 
-            return Ok(products);
-        }
-        catch (Exception)
-        {
-            return Problem("Se produjo un error al obtener los productos");
-        }
+        if (products == null || !products.Any())
+            return NoContent();
+
+        return Ok(products);
+
 
     }
 
@@ -44,23 +39,9 @@ public class ProductsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProductById(Guid id)
     {
-        try
-        {
-            var product = await _service.GetProductById(id);
-            return Ok(product);
-        }
-        catch (ArgumentException ae)
-        {
-            return BadRequest(ae.Message);
-        }
-        catch (EntityNotFoundException enf)
-        {
-            return NotFound(enf.Message);
-        }
-        catch (Exception)
-        {
-            return Problem("Se produjo un error al obtener el producto.");
-        }
+        var product = await _service.GetProductById(id);
+        return Ok(product);
+        
     }
 
 
@@ -117,37 +98,16 @@ public class ProductsController : ControllerBase
     [HttpPatch("{id}")]
     public async Task<IActionResult> PatchProduct(Guid id, [FromBody] ProductModel.PatchRequest request)
     {
-        try
-        {
-            await _service.PathProduct(id, request);
-            return NoContent();
-        }
-        catch (EntityNotFoundException enf)
-        {
-            return NotFound(enf.Message);
-        }
-        catch (Exception)
-        {
-            return Problem("Se produjo un error al actualizar parcialmente el producto");
-        }
+        await _service.PathProduct(id, request);
+        return NoContent();
+       
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduct(Guid id)
     {
-        try
-        {
-            await _service.DeleteProduct(id);
-            return NoContent();
-        }
-        catch (EntityNotFoundException enf)
-        {
-            return NotFound(enf.Message);
-        }
-        catch (Exception)
-        {
-            return Problem("Se produjo un error al eliminar el producto");
-        }
+        await _service.DeleteProduct(id);
+        return NoContent();      
 
     }
 
